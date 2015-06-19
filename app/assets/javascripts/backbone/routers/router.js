@@ -3,6 +3,11 @@ var app = app || {};
 app.AppRouter = Backbone.Router.extend({
     routes: {
         '': 'index'
+    },
+
+    index: function () {
+      // I want to get all contacts
+      // render contacts
     }
 
 });

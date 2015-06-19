@@ -4,11 +4,23 @@
 
 <!-- example of a template that the backend can interface with. This will alow you to style everything we're doing before we even get anything done yayyyyyyyyyyyy -->
 <!-- View of individual flight. -->
-<script id="flightViewTemplate" type="text/template">
+<!-- <script id="flightViewTemplate" type="text/template">
   <div>
     <li class="list-group-iem"><strong>From: </strong> {{ origin }}</li>
     <li class="list-group-iem"><strong>To: </strong> {{ destination }}</li>
     <li class="list-group-iem"><strong>Date Leaving: </strong>{{ date }}</li>
     <div id="seats"></div>
+  </div>
+</script> -->
+
+<script id="contactView" type="text/template">
+  <div>
+    <li>Contact name: {{ name }}</li>
+    <li>Email: {{ email_address }}</li>
+    <li>Weeks average feeling: {{ weekFeel }}</li>
+    <li>Current feeling: {{ currentFeel }}</li>
+    <li>Highest feeling: {{ highFeel }}</li>
+    <li>Lowest feeling: {{ lowFeel }}</li>
+    <li>SO MANY FEELS</li>
   </div>
 </script>
