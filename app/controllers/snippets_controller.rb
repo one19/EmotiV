@@ -1,28 +1,22 @@
 class SnippetsController < ApplicationController
-  before_action :set_snippet, only: [:show, :edit, :update, :destroy]
+  before_action :check_if_admin, :except => [:index, :show]
 
-  # GET /snippets
-  # GET /snippets.json
   def index
     @snippets = Snippet.all
   end
 
-  # GET /snippets/1
-  # GET /snippets/1.json
   def show
+    @snippet = Snippet.find(params[:id])
   end
 
-  # GET /snippets/new
   def new
     @snippet = Snippet.new
   end
 
-  # GET /snippets/1/edit
   def edit
+    @snippet = Snippet.find(params[:id])
   end
 
-  # POST /snippets
-  # POST /snippets.json
   def create
     @snippet = Snippet.new(snippet_params)
 
@@ -37,9 +31,8 @@ class SnippetsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /snippets/1
-  # PATCH/PUT /snippets/1.json
   def update
+    @snippet = Snippet.find(params[:id])
     respond_to do |format|
       if @snippet.update(snippet_params)
         format.html { redirect_to @snippet, notice: 'Snippet was successfully updated.' }
@@ -51,20 +44,19 @@ class SnippetsController < ApplicationController
     end
   end
 
-  # DELETE /snippets/1
-  # DELETE /snippets/1.json
   def destroy
-    @snippet.destroy
+    snippet = Snippet.find(params[:id])
+    snippet.destroy
     respond_to do |format|
       format.html { redirect_to snippets_url, notice: 'Snippet was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_snippet
-      @snippet = Snippet.find(params[:id])
+    def check_if_admin
+      redirect_to root_path unless @current_user.present? & @current_user.admin?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

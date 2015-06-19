@@ -1,15 +1,12 @@
 class ContactsController < ApplicationController
-  before_action :set_contact, only: [:show, :edit, :update, :destroy]
+  before_action :check_if_admin, :except => [:index, :show]
 
-  # GET /contacts
-  # GET /contacts.json
   def index
     @contacts = Contact.all
   end
 
-  # GET /contacts/1
-  # GET /contacts/1.json
   def show
+    @contact = Contact.find(params[:id])
   end
 
   # GET /contacts/new
@@ -19,10 +16,9 @@ class ContactsController < ApplicationController
 
   # GET /contacts/1/edit
   def edit
+    @contact = Contact.find(params[:id])
   end
 
-  # POST /contacts
-  # POST /contacts.json
   def create
     @contact = Contact.new(contact_params)
 
@@ -37,9 +33,8 @@ class ContactsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /contacts/1
-  # PATCH/PUT /contacts/1.json
   def update
+    @contact = Contact.find(params[:id])
     respond_to do |format|
       if @contact.update(contact_params)
         format.html { redirect_to @contact, notice: 'Contact was successfully updated.' }
@@ -51,9 +46,8 @@ class ContactsController < ApplicationController
     end
   end
 
-  # DELETE /contacts/1
-  # DELETE /contacts/1.json
   def destroy
+    @contact = Contact.find(params[:id])
     @contact.destroy
     respond_to do |format|
       format.html { redirect_to contacts_url, notice: 'Contact was successfully destroyed.' }
@@ -61,10 +55,11 @@ class ContactsController < ApplicationController
     end
   end
 
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_contact
-      @contact = Contact.find(params[:id])
+
+    def check_if_admin
+      redirect_to root_path unless @current_user.present? & @current_user.admin?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

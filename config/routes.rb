@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   resources :snippets
   resources :contacts
   resources :users
+  root :to => 'pages#'
 
   get '/signup' => 'pages#signup'
   get '/login' => 'pages#login'
