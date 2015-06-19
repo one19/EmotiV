@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @contact.name %>
+</p>
+
+<p>
+  <strong>Email address:</strong>
+  <%= @contact.email_address %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @contact.user_id %>
+</p>
+
+<p>
+  <strong>Weekfeel:</strong>
+  <%= @contact.weekFeel %>
+</p>
+
+<p>
+  <strong>Currentfeel:</strong>
+  <%= @contact.currentFeel %>
+</p>
+
+<p>
+  <strong>Highfeel:</strong>
+  <%= @contact.highFeel %>
+</p>
+
+<p>
+  <strong>Lowfeel:</strong>
+  <%= @contact.lowFeel %>
+</p>
+
+<%= link_to 'Edit', edit_contact_path(@contact) %> |
+<%= link_to 'Back', contacts_path %>

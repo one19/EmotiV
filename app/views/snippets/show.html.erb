@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Inbound:</strong>
+  <%= @snippet.inbound %>
+</p>
+
+<p>
+  <strong>Contact:</strong>
+  <%= @snippet.contact_id %>
+</p>
+
+<p>
+  <strong>Context:</strong>
+  <%= @snippet.context %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @snippet.date %>
+</p>
+
+<%= link_to 'Edit', edit_snippet_path(@snippet) %> |
+<%= link_to 'Back', snippets_path %>
