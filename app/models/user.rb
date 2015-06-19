@@ -15,4 +15,10 @@
 class User < ActiveRecord::Base
   has_many :contacts
   has_many :snippets, through: :contacts
+
+  has_secure_password
+  
+  ##error handling for things like "no blank names"
+  validates :name, :presence => true
+  validates :name, :uniqueness => true #case-sensative
 end

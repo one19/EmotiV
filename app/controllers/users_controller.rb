@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_action :check_if_admin, :except => [:index, :show]
 
   def index
     @users = User.all
@@ -60,12 +59,8 @@ class UsersController < ApplicationController
 
   private
 
-    def check_if_admin
-      redirect_to root_path unless @current_user.present? & @current_user.admin?
-    end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :username, :password_digest, :email, :admin)
+      params.require(:user).permit(:name, :username, :password, :password_confirmation, :email, :admin)
     end
 end
