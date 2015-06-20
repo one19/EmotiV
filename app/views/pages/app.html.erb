@@ -1,6 +1,9 @@
 <!-- Hack to get user_id into JS environment -->
 <script>app.user_id = <%= @current_user? @current_user.id : 'undefined' %>;</script>
 
+<!-- Main App. div. Our Backbone views will basically overwrite the HTML data within this div -->
+<div id="mainApp" class="container"></div>
+
 <script id="home" type="text/template">
   
 
