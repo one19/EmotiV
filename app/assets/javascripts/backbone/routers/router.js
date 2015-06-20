@@ -2,33 +2,43 @@ var app = app || {};
 
 app.AppRouter = Backbone.Router.extend({
     routes: {
-        '': 'index'
+        '': 'index',
+        '/contacts/:id': 'viewContact'
     },
 
     index: function () {
-      // I want to get all contacts
-      // render contacts
+      // Retrieve all contacts
+      // Render contacts
+      // var appView = new 
+    },
+
+    viewContact: function () {
+      // Retrieve a contact
+      // Render contact
     }
 
 });
 
 // app.AppRouter = Backbone.Router.extend({
-//     routes: {
-//         '': 'index',
-//         'flights/:id': 'viewFlight'
-//     },
 
-//     index: function() {
-//         var appView = new app.AppView({
-//             collection: app.burningFlights
-//         });
-//         appView.render();
-//     },
+//   routes: {
+//     ''          : 'index',
+//     'posts/:id': 'viewPost'
+//   },
 
-//     viewFlight: function(id) {
-//         app.flight = app.burningFlights.get(id);
-//         app.flightView = new app.FlightView({model : app.flight})
-//         app.flightView.render();
-//     }
+//   // GET /
+//   index: function () {
+//     console.log('index route');
+//     var appView = new app.AppView({collection: app.blogPosts});
+//     appView.render();
+//   },
+
+//   // GET /posts/:id
+//   viewPost: function (id) {
+//     console.log('viewPost route',id);
+//     var post = app.blogPosts.get(id);
+//     var postView = new PostView({model:post});
+//     postView.render();
+//   }
 
 // });
