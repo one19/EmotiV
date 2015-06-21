@@ -3,6 +3,10 @@ class ContactsController < ApplicationController
 
   def index
     @contacts = Contact.all
+    respond_to do |format|
+      format.html {} # default: show the associated view
+      format.json { render :json => @contacts }
+    end
   end
 
   def show
