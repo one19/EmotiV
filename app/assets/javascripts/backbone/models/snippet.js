@@ -1,5 +1,5 @@
 var app = app || {};
 
-app.Snippet = new Backbone.Model.extend({
+app.Snippet = Backbone.Model.extend({
   urlRoot: '/snippets'
 });

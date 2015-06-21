@@ -1,34 +1,18 @@
 var app = app || {};
 
+//renders the main app view. This will run the main app view, which in turn will deploy all our other views/logic, as well as the app variable on site-load
 app.AppView = Backbone.View.extend({
-<<<<<<< HEAD
-  el: '#home',
-  render: function () {
-    var appHTML = $('#')
-  }
-});
-
-// app.AppView = Backbone.View.extend({
-//     el: '#main',
-
-//     render: function() {
-//         var appHTML = $('#appTemplate').html();
-//         this.$el.html(appHTML)
-
-//         this.collection.each(function(flight) {
-//             var flightListView = new app.FlightListView({model: flight});
-//             flightListView.render();
-//         });
-//     }
-
-
-// });
-=======
+  // in #mainApp div render the #home script
   el: '#mainApp',
+  render: function () {
+    var appHTML = $('#home').html();
+    this.$el.html(appHTML);
 
-  render: function() {
-    console.log('App loaded?')
+    // List out all the contacts the user has -- ONLY WORKS WHEN THIS IS COMMENTED OUT
+    this.collection.each( function (contact) {
+      var contactListView = new app.contactListView({model: contact});
+      contactListView.render();
+    });
   }
 
 });
->>>>>>> 1004ac71290e0f68bcf5030ec4cd66643d793fb7

@@ -1,16 +1,16 @@
 var app = app || {};
 
-app.AppRouter = Backbone.Router.extend({
-    routes: {
-        // '': 'index',
-        '/contacts/:id': 'viewContact',
-        '' : 'test'
-    },
+app.Router = Backbone.Router.extend({
+  routes: {
+    '': 'home',
+    '/contacts/:id': 'viewContact' //,
+    // '': 'test'
+  },
 
-  index: function () {
-    // Retrieve all contacts
-    // Render contacts
-    // var appView = new 
+  home: function () {
+    console.log("home view");
+    app.appView = new app.AppView({collection: app.allContacts});
+    app.appView.render();
   },
 
   viewContact: function () {
@@ -18,35 +18,12 @@ app.AppRouter = Backbone.Router.extend({
     // Render contact
   },
 
+  //this sets up the router file with where each #link will take us. I'm just putting this in so that charlotte can test the layouts in a test view, sorry Andrew!
+  //This immediately runs the test page, because I've set the home route to do the test view. We will have to change this to our home page. So when you run the site, test is actually being rendered, and routes and test are stored in the app variable.
   test: function(id) {
-
     app.testView = new app.TestView();
     app.testView.render();
-
     console.log('ROUTE: test');
   }
-
 });
-
-// app.AppRouter = Backbone.Router.extend({
-
-//   routes: {
-//     ''          : 'index',
-//     'posts/:id': 'viewPost'
-//   },
-
-//   // GET /
-//   index: function () {
-//     console.log('index route');
-//     var appView = new app.AppView({collection: app.blogPosts});
-//     appView.render();
-//   },
-
-//   // GET /posts/:id
-//   viewPost: function (id) {
-//     console.log('viewPost route',id);
-//     var post = app.blogPosts.get(id);
-//     var postView = new PostView({model:post});
-//     postView.render();
-//   }
-// });
+  

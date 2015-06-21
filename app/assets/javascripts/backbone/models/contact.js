@@ -1,5 +1,5 @@
 var app = app || {};
 
-app.Contact = new Backbone.Model.extend({
+app.Contact = Backbone.Model.extend({
   urlRoot: '/contacts'
 });

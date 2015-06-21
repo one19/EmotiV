@@ -1,5 +1,5 @@
 var app = app || {};
 
-app.User = new Backbone.Model.extend({
+app.User = Backbone.Model.extend({
   urlRoot: '/users'
 });
