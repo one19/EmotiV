@@ -13,7 +13,7 @@ app.ContactListView = Backbone.View.extend({
     $("#mainApp").append( toAppend );
   },
   showContact: function () {
-    app.router.navigate('contacts/' + this.model.get('id'),true)
+    app.router.navigate('contacts/' + this.model.get('id'),true);
   }
 
 });
