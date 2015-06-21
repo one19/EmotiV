@@ -31,9 +31,8 @@ Rails.application.routes.draw do
   resources :snippets
   resources :contacts
   resources :users
-  root :to => 'layouts#application'
+  root :to => 'pages#app'
 
-  get '/signup' => 'pages#signup'
   get '/login' => 'pages#login'
   post '/login' => 'session#create'
   delete '/login' => 'session#destroy'

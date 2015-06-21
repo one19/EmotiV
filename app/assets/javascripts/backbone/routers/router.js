@@ -2,20 +2,29 @@ var app = app || {};
 
 app.AppRouter = Backbone.Router.extend({
     routes: {
-        '': 'index',
-        '/contacts/:id': 'viewContact'
+        // '': 'index',
+        '/contacts/:id': 'viewContact',
+        '' : 'test'
     },
 
-    index: function () {
-      // Retrieve all contacts
-      // Render contacts
-      // var appView = new 
-    },
+  index: function () {
+    // Retrieve all contacts
+    // Render contacts
+    // var appView = new 
+  },
 
-    viewContact: function () {
-      // Retrieve a contact
-      // Render contact
-    }
+  viewContact: function () {
+    // Retrieve a contact
+    // Render contact
+  },
+
+  test: function(id) {
+
+    app.testView = new app.TestView();
+    app.testView.render();
+
+    console.log('ROUTE: test');
+  }
 
 });
 
@@ -40,5 +49,4 @@ app.AppRouter = Backbone.Router.extend({
 //     var postView = new PostView({model:post});
 //     postView.render();
 //   }
-
 // });

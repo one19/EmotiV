@@ -17,7 +17,7 @@
   </div>
   <div class="field">
     <%= f.label :contact_id %><br>
-    <%= f.number_field :contact_id %>
+    <%= f.collection_select :contact_id, Contact.all, :id, :name %>
   </div>
   <div class="field">
     <%= f.label :context %><br>

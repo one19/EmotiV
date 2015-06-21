@@ -1,6 +1,13 @@
 <p id="notice"><%= notice %></p>
 
+<h3>Admin Routes: </h3>
+
+<%= link_to 'Users Index', users_path %>
+<%= link_to 'Contacts Index', contacts_path %>
+
 <h1>Listing Snippets</h1>
+
+<%= link_to 'New Snippet', new_snippet_path %>
 
 <table>
   <thead>
@@ -29,5 +36,3 @@
 </table>
 
 <br>
-
-<%= link_to 'New Snippet', new_snippet_path %>
