@@ -15,9 +15,20 @@ app.Router = Backbone.Router.extend({
 
   viewContact: function (id) {
     console.log('Individual contact view',id);
-    contact = app.allContacts.get(id);
+    var contact = app.allContacts.get(id);
     app.contactView = new app.ContactView({model: contact});
     app.contactView.render();
+
+    app.allSnippets = new app.Snippets();
+    app.allSnippets.fetch().done( function (snippet) {
+      app.userSnippets = new app.Snippets( app.allSnippets.where({ 
+        contact_id: parseInt(id)
+      }));
+      app.userSnippets.each( function ( snippet ) {
+        app.snippetView = new app.SnippetView( {model:snippet} );
+        app.snippetView.render();
+      })
+    });
   },
 
   //this sets up the router file with where each #link will take us. I'm just putting this in so that charlotte can test the layouts in a test view, sorry Andrew!

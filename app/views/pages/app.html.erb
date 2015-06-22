@@ -75,8 +75,17 @@
     <li>Current feeling: {{ currentFeel }}</li>
     <li>Highest feeling: {{ highFeel }}</li>
     <li>Lowest feeling: {{ lowFeel }}</li>
-    <li>SO MANY FEELS</li>
+
+    <div id="snippetsHere"></div>
   </div>
+</script>
+
+<script id="snippetView" type="text/template">
+  <p>snippet time</p>    
+  <li>inbound: {{ inbound }}</li>
+  <li>Contact: {{ contact_id }}</li>
+  <li>Date of snippet: {{ date }}</li>
+  <li>Context: {{ context }}</li>
 </script>
 
 <script id="authorizeView" type="text/template">
