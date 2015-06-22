@@ -72,22 +72,50 @@ app.CheckAuthView = Backbone.View.extend({
    * are found an appropriate message is printed.
    */
   listLabels: function () {
-    var request = gapi.client.gmail.users.labels.list({
+    // var request = gapi.client.gmail.users.labels.list({
+    //   'userId': 'me'
+    // });
+
+    var request = gapi.client.gmail.users.messages.list({
       'userId': 'me'
     });
 
     request.execute( function (resp) {
-      var labels = resp.labels;
-      app.checkAuthView.appendPre('Labels:');
 
-      if (labels.length > 0) {
-        for (i = 0; i < labels.length; i++) {
-          var label = labels[i];
-          app.checkAuthView.appendPre(label.name)
+      var messages = resp.messages;
+
+      var batch = gapi.client.newBatch();
+      app.checkAuthView.appendPre('Messages:');
+
+      //this generates the batch file for every email id in our 100 responses from the server
+      if (messages.length > 0) {
+        for (var i = 0; i < messages.length - 5 ; i++) {
+          var message = messages[i];
+
+          //this adds commands to the batch request one at a time for each element
+          batch.add(gapi.client.gmail.users.messages.get({'userId': 'me', 'id': message.id}));
+          //app.checkAuthView.appendPre(thread.name)
         }
       } else {
-        app.checkAuthView.appendPre('No Labels found.');
+        app.checkAuthView.appendPre('No messages found.');
       }
+
+      //this executes the batched get requests, and on completion adds parts of them to the page
+      batch.execute( function (resp) {
+        var messages = resp;
+        console.log(resp)
+
+        if (messages.length > 0) {
+          for (var i = 0; i < messages.length; i++) {
+            var message = messages[i];
+
+            app.checkAuthView.appendPre(message.payload.headers[0]);
+          }
+        } else {
+          app.checkAuthView.appendPre('No messages found.');
+        }
+
+      });
     } );
   },
 
