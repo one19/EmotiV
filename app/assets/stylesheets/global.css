@@ -1,0 +1,59 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('../font/fontello.eot?48319651');
+  src: url('../font/fontello.eot?48319651#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff?48319651') format('woff'),
+       url('../font/fontello.ttf?48319651') format('truetype'),
+       url('../font/fontello.svg?48319651#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.headerbg {
+  background-color: #226666;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-bottom: 20px; 
+  height: 70px;
+  width: 100%;
+}
+
+.nav a {
+  text-decoration: none;
+}
+
+.nav {
+  list-style: none;
+  position: fixed;
+}
+.nav:first-child {
+  right: 0;
+  margin: 25px;
+}
+
+.nav:nth-child(2) {
+  right: 0;
+  margin: 25px 100px 25px 25px;
+}
+
+.icon-theatre {
+  color: gray;
+  height: 50px;
+  position: fixed;
+  width: 50px;
+  left: 0;
+  margin-left: 50px;
+  z-index: 2;
+}
+
+#logobg {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  background-color: #fff;
+  left: 0;
+  margin-left: 50px;
+  z-index: 1;
+  border-radius: 50%;
+}
