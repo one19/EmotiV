@@ -3,8 +3,9 @@ var app = app || {};
 app.Router = Backbone.Router.extend({
   routes: {
     '': 'home',
-    '/contacts/:id': 'viewContact' //,
+    '/contacts/:id': 'viewContact',
     // '': 'test'
+    //'': 'checkAuthView'
   },
 
   home: function () {
@@ -18,12 +19,19 @@ app.Router = Backbone.Router.extend({
     // Render contact
   },
 
-  //this sets up the router file with where each #link will take us. I'm just putting this in so that charlotte can test the layouts in a test view, sorry Andrew!
-  //This immediately runs the test page, because I've set the home route to do the test view. We will have to change this to our home page. So when you run the site, test is actually being rendered, and routes and test are stored in the app variable.
-  test: function(id) {
+  //testing framework for us to test styles/links ect.
+  test: function (id) {
     app.testView = new app.TestView();
     app.testView.render();
     console.log('ROUTE: test');
+  },
+
+  checkAuthView: function () {
+    app.checkAuthView = new app.CheckAuthView();
+    app.checkAuthView.render();
+    console.log('check auth view')
   }
+
+
 });
   
