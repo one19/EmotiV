@@ -2,10 +2,10 @@ var app = app || {};
 
 app.Router = Backbone.Router.extend({
   routes: {
-    '': 'home',
-    'contacts/:id': 'viewContact' //,
+    //'': 'home',
+    'contacts/:id': 'viewContact', //,
     // '': 'test'
-    //'': 'checkAuthView'
+    '': 'checkAuthView'
   },
 
   home: function () {
