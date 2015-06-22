@@ -1,0 +1,22 @@
+.hometext p {
+  font-size: 20px;
+  line-height: 1.5em;
+  text-align: center;
+}
+
+.hometext {
+  max-width: 700px;
+  margin: 50px auto 0;
+}
+
+#video {
+  margin-left: -15px;
+}
+
+#heading-over-image {
+  color: #fff;
+  font-size: 60px;
+  margin-top: -225px;
+  margin-bottom: 230px;
+  text-align: center;
+}
