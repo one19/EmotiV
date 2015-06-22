@@ -31,12 +31,15 @@ app.CheckAuthView = Backbone.View.extend({
    * @param {Object} authResult Authorization result.
    */
   handleAuthResult: function (authResult) {
+    console.log("afsdgsdgds")
     var authorizeDiv = document.getElementById('authorize-div');
     if (authResult && !authResult.error) {
+      console.log('success')
       // Hide auth UI, then load client library.
       authorizeDiv.style.display = 'none';
-      app.CheckAuthView.loadGmailApi();
+      app.checkAuthView.loadGmailApi();
     } else {
+      console.log('failure')
       // Show auth UI, allowing the user to initiate authorization by
       // clicking authorize button.
       authorizeDiv.style.display = 'inline';
@@ -51,7 +54,8 @@ app.CheckAuthView = Backbone.View.extend({
   handleAuthClick: function (event) {
     gapi.auth.authorize(
       {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
-      app.CheckAuthView.handleAuthResult);
+      app.checkAuthView.handleAuthResult);
+    console.log('this shit authorized')
     return false;
   },
 
@@ -60,7 +64,7 @@ app.CheckAuthView = Backbone.View.extend({
    * is loaded.
    */
   loadGmailApi: function () {
-    gapi.client.load('gmail', 'v1', app.CheckAuthView.listLabels);
+    gapi.client.load('gmail', 'v1', app.checkAuthView.listLabels);
   },
 
   /**
@@ -74,15 +78,15 @@ app.CheckAuthView = Backbone.View.extend({
 
     request.execute( function (resp) {
       var labels = resp.labels;
-      app.CheckAuthView.appendPre('Labels:');
+      app.checkAuthView.appendPre('Labels:');
 
       if (labels.length > 0) {
         for (i = 0; i < labels.length; i++) {
           var label = labels[i];
-          app.CheckAuthView.appendPre(label.name)
+          app.checkAuthView.appendPre(label.name)
         }
       } else {
-        app.CheckAuthView.appendPre('No Labels found.');
+        app.checkAuthView.appendPre('No Labels found.');
       }
     } );
   },

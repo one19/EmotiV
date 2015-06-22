@@ -11,9 +11,9 @@ Contact.destroy_all
 Snippet.destroy_all
 
 #admin should be the only user with the admin status, and therefore, ability to see the back-end rails pages
-user1 = User.create(:name => 'admin', :username => 'admin', :password => 'admin', :password_confirmation =>'admin', :email => 'admin@admin.com')
-user2 = User.create(:name => 'Tim', :username => 'NotTim', :password => 'butt', :password_confirmation =>'butt', :email => 'butt@butt.com')
-user3 = User.create(:name => 'Todd', :username => 'Brody', :password => 'butt', :password_confirmation =>'butt', :email => 'someguy@place.com')
+user1 = User.create(:name => 'admin', :username => 'admin', :password => 'admin', :password_confirmation =>'admin', :email => 'admin@admin.com', :admin => false)
+user2 = User.create(:name => 'Tim', :username => 'NotTim', :password => 'butt', :password_confirmation =>'butt', :email => 'butt@butt.com', :admin => false)
+user3 = User.create(:name => 'Todd', :username => 'Brody', :password => 'butt', :password_confirmation =>'butt', :email => 'someguy@place.com', :admin => false)
 
 #Contacts for each user, with dummy data. Note that the 'Feel's are all rounded to single digits
 c1 = Contact.create(:name => 'Brett Farvre', :email_address => 'theaddress@gmail.com', :weekFeel => 89, :currentFeel => 88, :highFeel => 91, :lowFeel => 34)
