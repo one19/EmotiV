@@ -6,7 +6,7 @@ app.SnippetView = Backbone.View.extend({
     var snippetTemplate = $('#snippetView').html();
     var snippetHTML = _.template(snippetTemplate);
 
-    var toAppend = this.$el.html( snippetHTML( this.model.toJSON() ) );
+    var toAppend = this.$el.html( snippetHTML( this.model.toJSON() ) ).addClass('snippet');
     $('#snippetsHere').append(toAppend);
   }
 });
