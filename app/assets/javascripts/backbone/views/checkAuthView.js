@@ -31,7 +31,6 @@ app.CheckAuthView = Backbone.View.extend({
    * @param {Object} authResult Authorization result.
    */
   handleAuthResult: function (authResult) {
-    console.log("afsdgsdgds")
     var authorizeDiv = document.getElementById('authorize-div');
     if (authResult && !authResult.error) {
       console.log('success')
@@ -55,7 +54,7 @@ app.CheckAuthView = Backbone.View.extend({
     gapi.auth.authorize(
       {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
       app.checkAuthView.handleAuthResult);
-    console.log('this shit authorized')
+    //console.log('this shit authorized')
     return false;
   },
 
@@ -127,7 +126,9 @@ app.CheckAuthView = Backbone.View.extend({
       var infArra = message.headers['From'].split(' ');
       var emailStr = infArra.pop;
       contact.email = emailStr.slice(1, -1);
-      if 
+
+      var contactEmails = [];
+      for (var i = 0 ; app.currentUserContact
     }
   },
 
