@@ -3,6 +3,10 @@ class SnippetsController < ApplicationController
 
   def index
     @snippets = Snippet.all
+    respond_to do |format|
+      format.html {} # default: show the associated view
+      format.json { render :json => @snippets }
+    end
   end
 
   def show
