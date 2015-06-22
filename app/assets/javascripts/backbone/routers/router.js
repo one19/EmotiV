@@ -3,7 +3,7 @@ var app = app || {};
 app.Router = Backbone.Router.extend({
   routes: {
     '': 'home',
-    '/contacts/:id': 'viewContact',
+    'contacts/:id': 'viewContact' //,
     // '': 'test'
     //'': 'checkAuthView'
   },
@@ -14,9 +14,11 @@ app.Router = Backbone.Router.extend({
     app.appView.render();
   },
 
-  viewContact: function () {
-    // Retrieve a contact
-    // Render contact
+  viewContact: function (id) {
+    console.log('Individual contact view',id);
+    contact = app.allContacts.get(id);
+    app.contactView = new app.ContactView({model: contact});
+    app.contactView.render();
   },
 
   //testing framework for us to test styles/links ect.
