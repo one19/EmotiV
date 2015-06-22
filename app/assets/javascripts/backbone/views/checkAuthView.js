@@ -102,14 +102,16 @@ app.CheckAuthView = Backbone.View.extend({
 
       //this executes the batched get requests, and on completion adds parts of them to the page
       batch.execute( function (resp) {
-        var messages = resp;
-        console.log(resp)
+        var messages = resp[0];
+        debugger;
 
         if (messages.length > 0) {
           for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
 
-            app.checkAuthView.appendPre(message.payload.headers[0]);
+            makeContacts(message.result);
+
+            //app.checkAuthView.appendPre(message.payload.headers[0]);
           }
         } else {
           app.checkAuthView.appendPre('No messages found.');
@@ -117,6 +119,16 @@ app.CheckAuthView = Backbone.View.extend({
 
       });
     } );
+  },
+
+  makeContacts: function (message) {
+    var contact = Contact.new;
+    if ( message.headers.length === 1 ) {
+      var infArra = message.headers['From'].split(' ');
+      var emailStr = infArra.pop;
+      contact.email = emailStr.slice(1, -1);
+      if 
+    }
   },
 
   /**

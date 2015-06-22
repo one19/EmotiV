@@ -9,6 +9,7 @@
 #  date       :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  gid        :string
 #
 
 class Snippet < ActiveRecord::Base

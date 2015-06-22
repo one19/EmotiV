@@ -12,6 +12,7 @@
 #  lowFeel       :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  threadIds     :text
 #
 
 class Contact < ActiveRecord::Base
