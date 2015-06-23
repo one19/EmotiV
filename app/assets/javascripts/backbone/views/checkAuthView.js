@@ -69,27 +69,34 @@ app.CheckAuthView = Backbone.View.extend({
   makeContacts: function (message) {
     var contact = new app.Contact();
 
-    var contactEmails = [];
-    if (app.currentUserContact) {
+    app.contactEmails = app.contactEmails || [];
+    // this loop checks whether or not the current user has any contacts saved, and if they do, maps them to the contactEmails app variable for use in checking against duplicates later.
+    if (app.currentUserContact.length > 0) {
       for ( var i = 0 ; i < app.currentUserContact.length ; i++ ) {
-        contactEmails.concat(app.currentUserContact[i].attributes['email_address']);
+        contactEmails.push(app.currentUserContact[i].get("email_address"));
       }
     }
 
     if ( message.payload.headers.length === 1 ) {
+      //this is the loop that handles hangouts conversations
       var infArra = message.payload.headers[0].value.split(' ');
       var emailStr = infArra.pop();
-
+      
       contact.set( 'email_address', emailStr.slice(1, -1) );
-      if ( _.contains(contactEmails, contact.attributes.email_address) ) {
+      //this is the conditional that removes any duplicate contacts from being saved to the database
+      if ( _.contains(app.contactEmails, contact.attributes.email_address) ) {
         return;
       } else {
-        contactEmails.concat( contact.attributes.email_address );
+        app.contactEmails.push( contact.attributes.email_address );
+        debugger;
         contact.set( 'name', infArra.join(' ') );
         contact.set( 'user_id', parseInt(app.user_id) );
         contact.save();
       }
 
+    } else {
+      //this is the loop that handles emails
+      
     }
   },
   /**
