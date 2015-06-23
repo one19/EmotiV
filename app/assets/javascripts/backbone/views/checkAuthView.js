@@ -66,6 +66,32 @@ app.CheckAuthView = Backbone.View.extend({
     gapi.client.load('gmail', 'v1', app.checkAuthView.listLabels);
   },
 
+  makeContacts: function (message) {
+    var contact = new app.Contact();
+
+    var contactEmails = [];
+    if (app.currentUserContact) {
+      for ( var i = 0 ; i < app.currentUserContact.length ; i++ ) {
+        contactEmails.concat(app.currentUserContact[i].attributes['email_address']);
+      }
+    }
+
+    if ( message.payload.headers.length === 1 ) {
+      var infArra = message.payload.headers[0].value.split(' ');
+      var emailStr = infArra.pop();
+
+      contact.set( 'email_address', emailStr.slice(1, -1) );
+      if ( _.contains(contactEmails, contact.attributes.email_address) ) {
+        return;
+      } else {
+        contactEmails.concat( contact.attributes.email_address );
+        contact.set( 'name', infArra.join(' ') );
+        contact.set( 'user_id', parseInt(app.user_id) );
+        contact.save();
+      }
+
+    }
+  },
   /**
    * Print all Labels in the authorized user's inbox. If no labels
    * are found an appropriate message is printed.
@@ -101,14 +127,13 @@ app.CheckAuthView = Backbone.View.extend({
 
       //this executes the batched get requests, and on completion adds parts of them to the page
       batch.execute( function (resp) {
-        var messages = resp[0];
-        debugger;
+        var messages = $.map(resp, function (el) {return el;});
 
         if (messages.length > 0) {
           for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
 
-            makeContacts(message.result);
+            app.checkAuthView.makeContacts(message.result);
 
             //app.checkAuthView.appendPre(message.payload.headers[0]);
           }
@@ -118,30 +143,6 @@ app.CheckAuthView = Backbone.View.extend({
 
       });
     } );
-  },
-
-  makeContacts: function (message) {
-    var contact = Contact.new;
-
-    var contactEmails = [];
-    for ( var i = 0 ; i < app.currentUserContact.length ; i++ ) {
-      contactEmails.concat(app.currentUserContact[i].attributes['email_address']);
-    }
-
-    if ( message.headers.length === 1 ) {
-      var infArra = message.headers['From'].split(' ');
-      var emailStr = infArra.pop;
-      contact.email = emailStr.slice(1, -1);
-
-      if ( _.contains(contactEmails, contact.email) ) {
-        return;
-      } else {
-        contact.name = infArra.join(' ');
-        contact.user_id = user_id;
-        contact.save();
-      }
-
-    }
   },
 
   /**

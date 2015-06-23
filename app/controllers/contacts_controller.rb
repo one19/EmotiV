@@ -1,5 +1,5 @@
 class ContactsController < ApplicationController
-  before_action :check_if_admin, :except => [:index, :show]
+  before_action :check_if_admin, :except => [:index, :show, :create]
 
   def index
     @contacts = Contact.all
