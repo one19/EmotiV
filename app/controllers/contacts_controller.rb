@@ -1,5 +1,5 @@
 class ContactsController < ApplicationController
-  before_action :check_if_admin, :except => [:index, :show, :create]
+  before_action :check_if_admin, :except => [:index, :show, :create, :upload]
 
   def index
     @contacts = Contact.all
@@ -57,6 +57,42 @@ class ContactsController < ApplicationController
       format.html { redirect_to contacts_url, notice: 'Contact was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def upload
+    # XML file uploaded to server is opened and then navigated down to the array of all sms objects
+    @xml_array = Crack::XML.parse(open(params[:xml].tempfile).read)['smses']['sms']
+
+
+    # Potentially will need to sort through array and take both name and content from the xml
+    # so that we can save the name into the database and run the content through the sentiment
+    # api and then store data.
+
+    # create array for all unique contact names to be pushed into
+    @xml_names = []
+    # iterate through array of smses to get all unique contact names
+    @xml_array.each do |sms|
+      info = sms['contact_name']
+      @xml_names << info
+      @xml_names.uniq!
+    end
+
+    # array of the users current contacts prior to mobile contacts being added.
+    # Can use to ensure we don't double up on contacts although you can email
+    # and sms the same person so probably not necessary. will delete in future
+    id = @current_user.id
+    @users_contacts = Contact.where("user_id = #{id}")
+    # create a new contact for each entry in @xml_names
+    @xml_names.each do |contact|
+      new_contact = Contact.new
+      new_contact.name = contact
+      new_contact.user_id = @current_user.id
+      new_contact.save
+    end
+
+    # destroy xml.temp data afterwards
+    # @xml_array.destroy
+    redirect_to root_path
   end
 
 
