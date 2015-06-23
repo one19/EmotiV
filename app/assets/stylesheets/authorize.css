@@ -1,0 +1,27 @@
+#authorize-div {
+  position: absolute;
+  background-color: #fff;
+  top: 0;
+  left: 35%;
+  box-sizing: border-box;
+  margin: 200px auto 50px;
+  width: 25%;
+  height: 50%;
+  padding: 2.5%; 
+}
+
+#authorize-label {
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.5em;
+  margin-top: 15%;
+}
+
+#authorize-button {
+  background-color: lightgray;
+  border: none;
+  font-size: 20px;
+  height: 50px;
+  margin: 15% 2.5% 10%;
+  width: 95%;
+}

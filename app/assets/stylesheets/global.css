@@ -17,6 +17,7 @@
   margin-bottom: 20px; 
   height: 70px;
   width: 100%;
+  z-index: 1;
 }
 
 .nav a {
@@ -26,6 +27,7 @@
 .nav {
   list-style: none;
   position: fixed;
+  z-index: 2;
 }
 .nav:first-child {
   right: 0;
@@ -57,7 +59,12 @@
   position: fixed;
   background-color: #fff;
   left: 0;
-  margin-left: 50px;
+  margin: 10px 50px;
   z-index: 1;
   border-radius: 50%;
+}
+
+#mainApp {
+  margin-top: 80px;
+  z-index: 1;
 }
