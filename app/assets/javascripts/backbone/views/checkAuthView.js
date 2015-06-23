@@ -63,17 +63,20 @@ app.CheckAuthView = Backbone.View.extend({
    * is loaded.
    */
   loadGmailApi: function () {
-    gapi.client.load('gmail', 'v1', app.checkAuthView.listLabels);
+    gapi.client.load('gmail', 'v1', app.checkAuthView.grabHundred);
   },
 
+
+  //this makes the contacts for a given message
   makeContacts: function (message) {
     var contact = new app.Contact();
 
     app.contactEmails = app.contactEmails || [];
+    app.currentUserContact = app.currentUserContact || [];
     // this loop checks whether or not the current user has any contacts saved, and if they do, maps them to the contactEmails app variable for use in checking against duplicates later.
     if (app.currentUserContact.length > 0) {
       for ( var i = 0 ; i < app.currentUserContact.length ; i++ ) {
-        contactEmails.push(app.currentUserContact[i].get("email_address"));
+        app.contactEmails.push(app.currentUserContact[i].get("email_address"));
       }
     }
 
@@ -88,7 +91,7 @@ app.CheckAuthView = Backbone.View.extend({
         return;
       } else {
         app.contactEmails.push( contact.attributes.email_address );
-        debugger;
+
         contact.set( 'name', infArra.join(' ') );
         contact.set( 'user_id', parseInt(app.user_id) );
         contact.save();
@@ -96,18 +99,38 @@ app.CheckAuthView = Backbone.View.extend({
 
     } else {
       //this is the loop that handles emails
+      debugger;
+      var from = _.findWhere(message.payload.headers, {name: 'From'});
+      var fromEmail = _.last(from.value.split(' ')).slice(1,-1);
+      from = _.last(from.value.split(' '));
+      var toEmail = _.findWhere(message.payload.headers, {name: 'Delivered-To'}).value;
+
+      if ( _.contains(app.contactEmails, fromEmailf) ) {
+        return;
+      } else if ( _.contains(app.contactEmails, toEmail) ) {
+
+      } else {
+        app.contactEmails.push( contact.attributes.email_address );
+
+        contact.set( 'name', infArra.join(' ') );
+        contact.set( 'user_id', parseInt(app.user_id) );
+        contact.save();
+      }
+      
       
     }
+
+    app.checkAuthView.makeSnippets(message);
+  },
+
+  makeSnippets: function (message) {
+
   },
   /**
    * Print all Labels in the authorized user's inbox. If no labels
    * are found an appropriate message is printed.
    */
-  listLabels: function () {
-    // var request = gapi.client.gmail.users.labels.list({
-    //   'userId': 'me'
-    // });
-
+  grabHundred: function () {
     var request = gapi.client.gmail.users.messages.list({
       'userId': 'me'
     });
@@ -115,15 +138,13 @@ app.CheckAuthView = Backbone.View.extend({
     request.execute( function (resp) {
 
       var messages = resp.messages;
-
       var batch = gapi.client.newBatch();
-      app.checkAuthView.appendPre('Messages:');
 
+      app.checkAuthView.appendPre('Messages:');
       //this generates the batch file for every email id in our 100 responses from the server
       if (messages.length > 0) {
-        for (var i = 0; i < messages.length - 5 ; i++) {
+        for (var i = 0; i < messages.length ; i++) {
           var message = messages[i];
-
           //this adds commands to the batch request one at a time for each element
           batch.add(gapi.client.gmail.users.messages.get({'userId': 'me', 'id': message.id}));
           //app.checkAuthView.appendPre(thread.name)
@@ -131,23 +152,18 @@ app.CheckAuthView = Backbone.View.extend({
       } else {
         app.checkAuthView.appendPre('No messages found.');
       }
-
       //this executes the batched get requests, and on completion adds parts of them to the page
       batch.execute( function (resp) {
+        console.log(resp);
         var messages = $.map(resp, function (el) {return el;});
-
         if (messages.length > 0) {
           for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
-
             app.checkAuthView.makeContacts(message.result);
-
-            //app.checkAuthView.appendPre(message.payload.headers[0]);
           }
         } else {
           app.checkAuthView.appendPre('No messages found.');
         }
-
       });
     } );
   },

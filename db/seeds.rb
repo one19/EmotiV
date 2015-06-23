@@ -11,7 +11,7 @@ Contact.destroy_all
 Snippet.destroy_all
 
 #admin should be the only user with the admin status, and therefore, ability to see the back-end rails pages
-user1 = User.create(:name => 'admin', :username => 'admin', :password => 'admin', :password_confirmation =>'admin', :email => 'admin@admin.com', :admin => false)
+user1 = User.create(:name => 'admin', :username => 'admin', :password => 'admin', :password_confirmation =>'admin', :email => 'maelstroswim@gmail.com', :admin => false)
 user2 = User.create(:name => 'Tim', :username => 'NotTim', :password => 'butt', :password_confirmation =>'butt', :email => 'butt@butt.com', :admin => false)
 user3 = User.create(:name => 'Todd', :username => 'Brody', :password => 'butt', :password_confirmation =>'butt', :email => 'someguy@place.com', :admin => false)
 
