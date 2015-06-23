@@ -63,10 +63,7 @@ class ContactsController < ApplicationController
     # XML file uploaded to server is opened and then navigated down to the array of all sms objects
     @xml_array = Crack::XML.parse(open(params[:xml].tempfile).read)['smses']['sms']
 
-
-    # Potentially will need to sort through array and take both name and content from the xml
-    # so that we can save the name into the database and run the content through the sentiment
-    # api and then store data.
+    # Potentially add something to end of name to differentiate phone and email contacts?
 
     # create array for all unique contact names to be pushed into
     @xml_names = []
