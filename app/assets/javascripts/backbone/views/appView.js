@@ -8,9 +8,12 @@ app.AppView = Backbone.View.extend({
     var appHTML = $('#home').html();
     this.$el.html(appHTML);
 
-    // List out all the contacts the user has -- need to edit either model or controller so that only appropriate contacts are listed 'user_id'
+
+    // List out all the contacts the user has
+    app.currentUserContact = [];
     this.collection.each( function (contact) {
       if (contact.get('user_id') === app.user_id) {
+        app.currentUserContact.push(contact);
         app.contactListView = new app.ContactListView({ model: contact });
         app.contactListView.render();
       }

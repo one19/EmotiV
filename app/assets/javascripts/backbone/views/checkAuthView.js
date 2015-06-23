@@ -122,13 +122,25 @@ app.CheckAuthView = Backbone.View.extend({
 
   makeContacts: function (message) {
     var contact = Contact.new;
+
+    var contactEmails = [];
+    for ( var i = 0 ; i < app.currentUserContact.length ; i++ ) {
+      contactEmails.concat(app.currentUserContact[i].attributes['email_address']);
+    }
+
     if ( message.headers.length === 1 ) {
       var infArra = message.headers['From'].split(' ');
       var emailStr = infArra.pop;
       contact.email = emailStr.slice(1, -1);
 
-      var contactEmails = [];
-      for (var i = 0 ; app.currentUserContact
+      if ( _.contains(contactEmails, contact.email) ) {
+        return;
+      } else {
+        contact.name = infArra.join(' ');
+        contact.user_id = user_id;
+        contact.save();
+      }
+
     }
   },
 
