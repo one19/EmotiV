@@ -17,6 +17,7 @@
   margin-bottom: 20px; 
   height: 70px;
   width: 100%;
+  z-index: 1;
 }
 
 .nav a {
@@ -26,6 +27,7 @@
 .nav {
   list-style: none;
   position: fixed;
+  z-index: 2;
 }
 .nav:first-child {
   right: 0;
