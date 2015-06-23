@@ -4,6 +4,9 @@ var app = app || {};
 app.AppView = Backbone.View.extend({
   // in #mainApp div render the #home script
   el: '#mainApp',
+  events: {
+    'click .authenticateLink': 'authPage'
+  },
   render: function () {
     var appHTML = $('#home').html();
     this.$el.html(appHTML);
@@ -18,6 +21,9 @@ app.AppView = Backbone.View.extend({
         app.contactListView.render();
       }
     });
+  },
+  authPage: function () {
+    app.router.navigate('auth',true);
   }
 
 });
