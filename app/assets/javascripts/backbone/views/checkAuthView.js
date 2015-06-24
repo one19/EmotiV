@@ -66,13 +66,66 @@ app.CheckAuthView = Backbone.View.extend({
     gapi.client.load('gmail', 'v1', app.checkAuthView.grabHundred);
   },
 
+  makeSnippets: function (emotMass, messages) {
+    var emotes = emotMass.toJSON();
+    for (var i = 0 ; i < messages.length ; i++ ) {
+      var message = messages[i];
+      var snippet = new app.Snippet();
+      //checks for messages vs emails
+      if ( message.result.payload.headers.length === 1 ) {
+        var infArra = message.payload.headers[0].value.split(' ');
+        var emailStr = infArra.pop().slice(1, -1);
+        //if the message email is equal to the current user's
+        if ( emailStr === app.email ) {
+          snippet.set( 'inbound', false );
+          var threadEmail = '';
+          threadEmail = _.findWhere(app.threads, {thread: message.result.threadId});
+          //checks if there is a pre-existing thread that we've spoken to, and if they've spoken back. Returns their id if they have, and dumps the whole shit-heap if they haven't.
+          if (threadEmail) {
+            var use = _.where(app.allContacts.models[0].attributes, "email_address = " + threadEmail.email );
+            snippet.set( 'contact_id', use[0] );
+          } else {
+            return;
+          };
+
+        } else {
+          snippet.set( 'inbound', true );
+          var use = _.where(app.allContacts.models[0].attributes, "email_address = " + emailStr );
+          snippet.set( 'contact_id', use[0] );
+        };
+      //does the same checking for emails
+      } else {
+        var from = _.findWhere(message.result.payload.headers, {name: 'From'});
+        var fromEmail = from.value.split(' ').pop().slice(1,-1);
+        if ( fromEmail === app.email ) {
+          snippet.set( 'inbound', false );
+          fromEmail = _.findWhere(message.result.payload.headers, {name: 'Delivered-To'}).value;
+          var use = _.where(app.allContacts.models[0].attributes, "email_address = " + fromEmail );
+          snippet.set( 'contact_id', use[0] );
+        } else {
+          snippet.set( 'inbound', true );
+          var use = _.where(app.allContacts.models[0].attributes, "email_address = " + fromEmail );
+          snippet.set( 'contact_id', use[0] );
+        };
+      };
+      snippet.set( 'content', emotMass[i] );
+      snippet.set( 'date', message.result.internalDate );
+      snippet.set( 'gid', message.result.id );
+      snippet.save();
+    }
+  },
 
   //this makes the contacts for a given message
   makeContacts: function (message) {
     var contact = new app.Contact();
 
+
     app.contactEmails = app.contactEmails || [];
     app.currentUserContact = app.currentUserContact || [];
+
+    if ( !_.contains(app.contactEmails, app.email) ) {
+      app.contactEmails.push(app.email);
+    }
     // this loop checks whether or not the current user has any contacts saved, and if they do, maps them to the contactEmails app variable for use in checking against duplicates later.
     if (app.currentUserContact.length > 0) {
       for ( var i = 0 ; i < app.currentUserContact.length ; i++ ) {
@@ -94,36 +147,54 @@ app.CheckAuthView = Backbone.View.extend({
 
         contact.set( 'name', infArra.join(' ') );
         contact.set( 'user_id', parseInt(app.user_id) );
+        contact.set( 'threadIds', message.payload.threadId )
         contact.save();
       }
 
     } else {
       //this is the loop that handles emails
-      debugger;
       var from = _.findWhere(message.payload.headers, {name: 'From'});
-      var fromEmail = _.last(from.value.split(' ')).slice(1,-1);
-      from = _.last(from.value.split(' '));
+      var fromEmail = from.value.split(' ').pop().slice(1,-1);
+      var fromName = from.join(', ');
       var toEmail = _.findWhere(message.payload.headers, {name: 'Delivered-To'}).value;
 
-      if ( _.contains(app.contactEmails, fromEmailf) ) {
-        return;
-      } else if ( _.contains(app.contactEmails, toEmail) ) {
-
+      if ( _.contains(app.contactEmails, fromEmail) ) {
+        return
       } else {
-        app.contactEmails.push( contact.attributes.email_address );
+        app.contactEmails.push( fromEmail );
 
-        contact.set( 'name', infArra.join(' ') );
+        contact.set( 'email_address', fromEmail)
+        contact.set( 'name', fromName );
         contact.set( 'user_id', parseInt(app.user_id) );
+        contact.set( 'threadIds', message.payload.threadId )
         contact.save();
       }
       
-      
     }
-
-    app.checkAuthView.makeSnippets(message);
   },
 
-  makeSnippets: function (message) {
+  batchEmote: function (resp) {
+    var snippet = new app.Snippet();
+
+    var messages = $.map(resp, function (el) {return el;});
+    var emotMass = [];
+    for ( var i = 0 ; i < messages.length ; i++ ) {
+      var message = messages[i];
+      var text = window.atob(message.result.payload.body.data);
+      emotMass.push(text);
+    }
+    $.ajax({
+      url: 'http://sentiment.vivekn.com/api/batch/',
+      method: "POST",
+      dataType: "JSON",
+      data: JSON.stringify( emotMass ),
+      success: function (data) {
+        makeSnippets(retData, messages);
+      },
+      error: function (data) {
+        console.log(data);
+      }
+    });
 
   },
   /**
@@ -132,15 +203,17 @@ app.CheckAuthView = Backbone.View.extend({
    */
   grabHundred: function () {
     var request = gapi.client.gmail.users.messages.list({
-      'userId': 'me'
+      'userId': 'me',
+      //'pageToken': page
     });
 
     request.execute( function (resp) {
 
       var messages = resp.messages;
       var batch = gapi.client.newBatch();
-
       app.checkAuthView.appendPre('Messages:');
+
+
       //this generates the batch file for every email id in our 100 responses from the server
       if (messages.length > 0) {
         for (var i = 0; i < messages.length ; i++) {
@@ -150,12 +223,24 @@ app.CheckAuthView = Backbone.View.extend({
           //app.checkAuthView.appendPre(thread.name)
         }
       } else {
-        app.checkAuthView.appendPre('No messages found.');
+        app.checkAuthView.appendPre('No messages input.');
       }
+
       //this executes the batched get requests, and on completion adds parts of them to the page
       batch.execute( function (resp) {
-        console.log(resp);
+        //console.log(resp);
         var messages = $.map(resp, function (el) {return el;});
+
+        app.threads = app.threads || [];
+        //if the current message isn't for the sender, append the thread id and user email to an object stored in app.threads
+        for ( var i = 0 ; i < messages.length ; i++ ) {
+          var message = messages[i];
+
+          if ( message.result.payload.headers[0].value !== app.email ) {
+            app.threads.push({thread: message.result.threadId, email: message.result.payload.headers[0].value});
+          }
+        }
+
         if (messages.length > 0) {
           for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
@@ -165,6 +250,9 @@ app.CheckAuthView = Backbone.View.extend({
           app.checkAuthView.appendPre('No messages found.');
         }
       });
+
+      //this executes snippet creation on the mass of messages
+      app.checkAuthView.batchEmote(resp);
     } );
   },
 
