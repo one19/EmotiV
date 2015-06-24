@@ -86,13 +86,11 @@ class ContactsController < ApplicationController
       @snippets_to_send << content
     end
 
-    @snippets_to_send.length.times do |i|
-      @xml_obj_array[i][:snippet_stats] = @snippets_to_send[i]
-    end
+    # @snippets_to_send.length.times do |i|
+    #   @xml_obj_array[i][:snippet_stats] = @snippets_to_send[i]
+    # end
 
-    # @xml_obj_array.length.times.last.snippet_stats = @snippet.pop()
-
-    raise params.inspect
+    # raise params.inspect
     snip_stats = analyse_snippet @snippets_to_send
 
     # # create array for all unique contact names to be pushed into
@@ -127,11 +125,9 @@ private
 
   def analyse_snippet snippet_batch
     # module which will allow us to post to our snippet data to the sentiment API
-    require 'net/http'
-    uri = URI("http://sentiment.vivekn.com/api/batch/")
-    res = Net::HTTP.post_form(uri)
-    puts res
-    # unsure if this works
+    url = "http://sentiment.vivekn.com/api/batch/"
+    res = HTTParty.post( url, { :body => snippet_batch.to_json })
+    res
   end
 
   def check_if_admin
