@@ -81,12 +81,12 @@ class ContactsController < ApplicationController
     end
 
     # Array containing all snippet stats after being sent through method
-    snip_stats = analyse_snippet @snippets_to_send
+    @snip_stats = analyse_snippet @snippets_to_send
     
-    snip_stats.length.times do |i|
-      @xml_obj_array[i][:snippet_stats] = snip_stats[i]
+    # Put them back into @xml_obj_array for no reason in particular. maybe it is pretty
+    @snip_stats.length.times do |i|
+      @xml_obj_array[i][:snippet_stats] = @snip_stats[i]
     end
-    raise params.inspect
 
     # create array for all unique contact names to be pushed into
     @xml_names = []
@@ -97,17 +97,25 @@ class ContactsController < ApplicationController
       @xml_names.uniq!
     end
 
-    # # may need to add phone/email after contact is stored so you can differentiate between the two
-    # id = @current_user.id
-    # @users_contacts = Contact.where("user_id = #{id}")
-
-
     # create a new contact for each entry in @xml_names
     @xml_names.each do |contact|
       new_contact = Contact.new
       new_contact.name = contact + ' SMS'
       new_contact.user_id = @current_user.id
       new_contact.save
+    end
+
+    @xml_array.each_with_index do |sms, ind|
+      snip = Snippet.new
+      inbound = @xml_array[ind]['type']
+      snip.inbound = inbound == '1' ? true : false
+      name = @xml_array[ind]['contact_name'] + ' SMS'
+      snip.contact_id = Contact.where({ name: name })[0].id
+      # snip.context = @xml_obj_array[ind][:snippet_stats]
+      snip.context = @snip_stats[ind]
+      snip.date = @xml_array[ind]['readable_date']
+      # binding.pry
+      snip.save
     end
 
     # destroy xml.temp data afterwards
