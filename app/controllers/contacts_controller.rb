@@ -67,18 +67,50 @@ class ContactsController < ApplicationController
     # so that we can save the name into the database and run the content through the sentiment
     # api and then store data.
 
-    # create array for all unique contact names to be pushed into
-    @xml_names = []
-    # iterate through array of smses to get all unique contact names
+
+    # Creates an array of snippets to be sent to API
+    @snippets_to_send = []
+    # Creates array of contact objects which we will put in DB afterwards
+    @xml_obj_array = []
+    # From each sms we create an obj with the contact name from the SMS and an empty key
+    # where we will store snippet stats after the API request. All snippets will be placed
+    # in another array. Must keep all in order atm so we can integrate the stats received
+    # from API back to proper contact before getting unique contacts with many snippets 
     @xml_array.each do |sms|
-      info = sms['contact_name']
-      @xml_names << info
-      @xml_names.uniq!
+      obj = {
+        name: sms['contact_name'],
+        snippet_stats: nil
+      }
+      @xml_obj_array << obj
+      content = {
+        txt: sms['body']
+      }
+      @snippets_to_send << content
     end
+
+    @snippets_to_send.length.times do |i|
+      @xml_obj_array[i][:snippet_stats] = @snippets_to_send[i][:txt]
+    end
+
+    # @xml_obj_array.length.times.last.snippet_stats = @snippet.pop()
+
+    raise params.inspect
+    snip_stats = analyse_snippet @snippets_to_send
+
+    # # create array for all unique contact names to be pushed into
+    # @xml_names = []
+    # # iterate through array of smses to get all unique contact names
+    # @xml_array.each do |sms|
+    #   info_name = sms['contact_name']
+    #   @xml_names << info_name
+    #   @xml_names.uniq!
+    # end
 
     # may need to add phone/email after contact is stored so you can differentiate between the two
     id = @current_user.id
     @users_contacts = Contact.where("user_id = #{id}")
+
+
     # create a new contact for each entry in @xml_names
     @xml_names.each do |contact|
       new_contact = Contact.new
@@ -93,14 +125,23 @@ class ContactsController < ApplicationController
   end
 
 
-  private
+private
 
-    def check_if_admin
-      redirect_to root_path unless @current_user.present? & @current_user.admin?
-    end
+  def analyse_snippet snippet_batch
+    # module which will allow us to post to our snippet data to the sentiment API
+    require 'net/http'
+    uri = URI("http://sentiment.vivekn.com/api/batch/")
+    res = Net::HTTP.post_form(uri)
+    puts res
+    # unsure if this works
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def contact_params
-      params.require(:contact).permit(:name, :email_address, :user_id, :weekFeel, :currentFeel, :highFeel, :lowFeel)
-    end
+  def check_if_admin
+    redirect_to root_path unless @current_user.present? & @current_user.admin?
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def contact_params
+    params.require(:contact).permit(:name, :email_address, :user_id, :weekFeel, :currentFeel, :highFeel, :lowFeel)
+  end
 end
