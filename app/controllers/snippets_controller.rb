@@ -1,5 +1,5 @@
 class SnippetsController < ApplicationController
-  before_action :check_if_admin, :except => [:index, :show]
+  before_action :check_if_admin, :except => [:index, :show, :create]
 
   def index
     @snippets = Snippet.all
