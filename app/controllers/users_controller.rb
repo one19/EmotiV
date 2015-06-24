@@ -17,7 +17,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    to_save = params.permit(:name, :username, :password, :password_confirmation, :email, :admin)
+    @user = User.new(to_save)
 
     if user_params["name"] == "admin"
       @user["admin"] = true
