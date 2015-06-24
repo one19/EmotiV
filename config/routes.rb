@@ -32,6 +32,7 @@
 Rails.application.routes.draw do
   #non-nested resources, remember to not use nested locations when using JSON ajax requests
   resources :snippets
+  post '/contacts/upload' => 'contacts#upload'
   resources :contacts
   resources :users
 

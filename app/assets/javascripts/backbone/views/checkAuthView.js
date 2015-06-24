@@ -154,8 +154,9 @@ app.CheckAuthView = Backbone.View.extend({
     } else {
       //this is the loop that handles emails
       var from = _.findWhere(message.payload.headers, {name: 'From'});
-      var fromEmail = from.value.split(' ').pop().slice(1,-1);
-      var fromName = from.join(', ');
+      from = from.value.split(' ')
+      var fromEmail = from.pop().slice(1,-1);
+      var fromName = from.join(' ');
       var toEmail = _.findWhere(message.payload.headers, {name: 'Delivered-To'}).value;
 
       if ( _.contains(app.contactEmails, fromEmail) ) {
@@ -249,10 +250,11 @@ app.CheckAuthView = Backbone.View.extend({
         } else {
           app.checkAuthView.appendPre('No messages found.');
         }
+
+        //this executes snippet creation on the mass of messages
+        app.checkAuthView.batchEmote(resp);
       });
 
-      //this executes snippet creation on the mass of messages
-      app.checkAuthView.batchEmote(resp);
     } );
   },
 
