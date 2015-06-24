@@ -82,14 +82,12 @@ class ContactsController < ApplicationController
         snippet_stats: nil
       }
       @xml_obj_array << obj
-      content = {
-        txt: sms['body']
-      }
+      content = sms['body']
       @snippets_to_send << content
     end
 
     @snippets_to_send.length.times do |i|
-      @xml_obj_array[i][:snippet_stats] = @snippets_to_send[i][:txt]
+      @xml_obj_array[i][:snippet_stats] = @snippets_to_send[i]
     end
 
     # @xml_obj_array.length.times.last.snippet_stats = @snippet.pop()
