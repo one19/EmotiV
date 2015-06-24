@@ -63,7 +63,9 @@ class ContactsController < ApplicationController
     # XML file uploaded to server is opened and then navigated down to the array of all sms objects
     @xml_array = Crack::XML.parse(open(params[:xml].tempfile).read)['smses']['sms']
 
-    # Potentially add something to end of name to differentiate phone and email contacts?
+    # Potentially will need to sort through array and take both name and content from the xml
+    # so that we can save the name into the database and run the content through the sentiment
+    # api and then store data.
 
     # create array for all unique contact names to be pushed into
     @xml_names = []
@@ -74,9 +76,7 @@ class ContactsController < ApplicationController
       @xml_names.uniq!
     end
 
-    # array of the users current contacts prior to mobile contacts being added.
-    # Can use to ensure we don't double up on contacts although you can email
-    # and sms the same person so probably not necessary. will delete in future
+    # may need to add phone/email after contact is stored so you can differentiate between the two
     id = @current_user.id
     @users_contacts = Contact.where("user_id = #{id}")
     # create a new contact for each entry in @xml_names
