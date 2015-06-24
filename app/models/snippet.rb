@@ -14,4 +14,5 @@
 
 class Snippet < ActiveRecord::Base
   belongs_to :user
+  validates :date, uniqueness: {scope: :context}
 end
