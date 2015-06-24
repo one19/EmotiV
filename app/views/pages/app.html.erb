@@ -1,5 +1,8 @@
 <!-- Hack to get user_id into JS environment -->
-<script>app.user_id = <%= @current_user? @current_user.id : 'undefined' %>;</script>
+<script>
+app.user_id = <%= @current_user? @current_user.id : 'undefined' %>;
+app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'undefined' %>";
+</script>
 
 <!-- Main App. div. Our Backbone views will basically overwrite the HTML data within this div, displaying everything on every view that we want it to! -->
 <div id="mainApp" class="container"></div>
