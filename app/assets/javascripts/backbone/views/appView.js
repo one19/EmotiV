@@ -8,7 +8,9 @@ app.AppView = Backbone.View.extend({
     'click .authenticateLink': 'authPage',
     'click #login_form': 'loginForm',
     'click #register_form': 'registerForm',
-    'click .back_btn': 'backBtn'
+    'click .back_btn': 'backBtn',
+    'click #register_button': 'onRegister',
+    'click #login_button': 'onLogin'
   },
 
   initialize: function () {
@@ -57,7 +59,46 @@ app.AppView = Backbone.View.extend({
     $(".social_login").show();
     $(".header_title").text('Login');
     return false;
+  },
+
+  onRegister: function (e) {
+    e.preventDefault();
+
+    var name = $('#name').val();
+    var email = $('.user_register .email').val();
+    var password = $('.user_register .password').val();
+    var confpassword = $('#confpassword').val();
+
+    var user = new app.User({
+      name: name,
+      email: email,
+      password: password,
+      password_confirmation: confpassword
+    });
+
+
+    user.save().done( function() {
+      app.router.navigate('', true);
+      $('#name, .user_register .email, #password, #confpassword').val('');
+    });
+
+  },
+
+  onLogin: function (e) {
+    e.preventDefault();
+    
+    var email = $('#email').val();
+    var password = $('#password').val();
+
+    var user = new app.User.find_by({
+      email: email,
+      password: password
+    });
+
+
   }
 
 
 });
+
+

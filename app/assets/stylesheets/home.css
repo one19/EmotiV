@@ -127,29 +127,6 @@ a.btn_red  {
 }
 
 /* Popup Styles*/
-.popupHeader  {
-    font-size: 16px;
-     text-transform:  uppercase;
-}
- 
-.popupHeader  {
-    background: #F4F4F2;
-     position: relative;
-     padding: 10px 20px;
-     border-bottom: 1px solid #DDD;
-     font-weight: bold;
-}
- 
-.popupHeader .modal_close  {
-    position:  absolute;
-     right:  0;
-     top: 0;
-     padding: 10px 15px;
-     background: #E4E4E2;
-     cursor:  pointer;
-     color: #aaa;
-     font-size: 16px;
-}
  
 .popupBody  {
     padding: 20px;
@@ -160,7 +137,7 @@ a.btn_red  {
 .social_login .social_box  {
     display: block;
      clear: both;
-     padding: 10px;
+     padding: 20px 10px;
      margin-bottom:  10px;
      background:  #F4F4F2;
      overflow:  hidden;
@@ -235,16 +212,6 @@ a.btn_red  {
      color: #666;
 }
 
-.user_login input[type="checkbox"]  {
-    float: left;
-     margin-right: 5px;
-}
-
-.user_login input[type="checkbox"]+label  {
-    float: left;
-}
-
-
 .user_login .checkbox  {
     margin-bottom:  10px;
      clear:  both;
@@ -265,31 +232,25 @@ a.btn_red  {
     display:  none;
 }
  
-.user_register label  {
-    display:  block;
-     margin-bottom: 5px;
-}
- 
 .user_register input[type="text"],  .user_register input[type="email"],  .user_register input[type="password"]  {
     display:  block;
      width: 90%;
-     padding:  10px;
+     padding:  20px 10px;
      border: 1px solid #DDD;
      color: #666;
+     margin: 5px auto;
 }
  
-.user_register input[type="checkbox"]  {
-    float: left;
-     margin-right: 5px;
+.center-or {
+  margin: 0 45%;
+  background-color: #fff;
+  display: inline-block;
+  padding: 8px;
 }
- 
-.user_register input[type="checkbox"]+label  {
-    float: left;
-}
- 
- 
-.user_register .checkbox  {
-    margin-bottom:  10px;
-     clear:  both;
-     overflow:  hidden;
+
+hr {
+  margin: -16px auto 20px;
+  width: 90%;
+  border: 0;
+  border-top: 1px solid #dce0e0;
 }
