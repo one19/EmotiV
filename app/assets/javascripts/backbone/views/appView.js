@@ -8,7 +8,8 @@ app.AppView = Backbone.View.extend({
     'click .authenticateLink': 'authPage',
     'click #login_form': 'loginForm',
     'click #register_form': 'registerForm',
-    'click .back_btn': 'backBtn'
+    'click .back_btn': 'backBtn',
+    'click #register_button': 'users#create'
   },
 
   initialize: function () {
