@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require underscore-min
 //= require backbone-min
+//= require b64
 //= require_tree ./backbone/models
 //= require_tree ./backbone/collections
 //= require_tree ./backbone/views

@@ -65,6 +65,6 @@ class SnippetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def snippet_params
-      params.require(:snippet).permit(:inbound, :contact_id, :context, :date)
+      params.require(:snippet).permit(:inbound, :contact_id, :context, :date, :gid)
     end
 end

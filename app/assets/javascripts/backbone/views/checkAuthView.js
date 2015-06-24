@@ -6,6 +6,8 @@ var CLIENT_ID = '1063464784487-2ok02fg85mtp1ann5unfah32r7k3ppkb.apps.googleuserc
 
 var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 
+// var base64 = require('base64-js');
+
 app.CheckAuthView = Backbone.View.extend({
   el: '#mainApp',
 
@@ -67,13 +69,14 @@ app.CheckAuthView = Backbone.View.extend({
   },
 
   makeSnippets: function (emotMass, messages) {
-    var emotes = emotMass.toJSON();
+    var emotes = emotMass;
     for (var i = 0 ; i < messages.length ; i++ ) {
       var message = messages[i];
       var snippet = new app.Snippet();
       //checks for messages vs emails
+
       if ( message.result.payload.headers.length === 1 ) {
-        var infArra = message.payload.headers[0].value.split(' ');
+        var infArra = message.result.payload.headers[0].value.split(' ');
         var emailStr = infArra.pop().slice(1, -1);
         //if the message email is equal to the current user's
         if ( emailStr === app.email ) {
@@ -83,7 +86,7 @@ app.CheckAuthView = Backbone.View.extend({
           //checks if there is a pre-existing thread that we've spoken to, and if they've spoken back. Returns their id if they have, and dumps the whole shit-heap if they haven't.
           if (threadEmail) {
             var use = _.where(app.allContacts.models[0].attributes, "email_address = " + threadEmail.email );
-            snippet.set( 'contact_id', use[0] );
+            snippet.set( 'contact_id', parseInt(use[0]) );
           } else {
             return;
           };
@@ -91,7 +94,7 @@ app.CheckAuthView = Backbone.View.extend({
         } else {
           snippet.set( 'inbound', true );
           var use = _.where(app.allContacts.models[0].attributes, "email_address = " + emailStr );
-          snippet.set( 'contact_id', use[0] );
+          snippet.set( 'contact_id', parseInt(use[0]) );
         };
       //does the same checking for emails
       } else {
@@ -101,15 +104,16 @@ app.CheckAuthView = Backbone.View.extend({
           snippet.set( 'inbound', false );
           fromEmail = _.findWhere(message.result.payload.headers, {name: 'Delivered-To'}).value;
           var use = _.where(app.allContacts.models[0].attributes, "email_address = " + fromEmail );
-          snippet.set( 'contact_id', use[0] );
+          snippet.set( 'contact_id', parseInt(use[0]) );
         } else {
           snippet.set( 'inbound', true );
           var use = _.where(app.allContacts.models[0].attributes, "email_address = " + fromEmail );
-          snippet.set( 'contact_id', use[0] );
+          snippet.set( 'contact_id', parseInt(use[0]) );
         };
       };
-      snippet.set( 'content', emotMass[i] );
-      snippet.set( 'date', message.result.internalDate );
+      var d = new Date(parseInt(message.result.internalDate));
+      snippet.set( 'context', JSON.stringify(emotMass[i]) );
+      snippet.set( 'date', d );
       snippet.set( 'gid', message.result.id );
       snippet.save();
     }
@@ -175,22 +179,36 @@ app.CheckAuthView = Backbone.View.extend({
   },
 
   batchEmote: function (resp) {
-    var snippet = new app.Snippet();
 
     var messages = $.map(resp, function (el) {return el;});
     var emotMass = [];
     for ( var i = 0 ; i < messages.length ; i++ ) {
       var message = messages[i];
-      var text = window.atob(message.result.payload.body.data);
-      emotMass.push(text);
+      var text = [];
+      if ( message.result.payload.body.data ) {
+        text = base64js.toByteArray( message.result.payload.body.data );
+      } else {
+        for ( var j = 0 ; j < message.result.payload.parts.length ; j++ ) {
+          if ( message.result.payload.parts[j].body.data ) {
+            text += base64js.toByteArray(message.result.payload.parts[j].body.data );
+          }
+        }
+      }
+      var words = '';
+      for ( var k = 0 ; k < text.length ; k++ ) {
+        words += String.fromCharCode(text[k])
+      };
+      //var text = window.atob(message.result.payload.body.data);
+      emotMass.push(words);
     }
+
     $.ajax({
       url: 'http://sentiment.vivekn.com/api/batch/',
       method: "POST",
       dataType: "JSON",
       data: JSON.stringify( emotMass ),
       success: function (data) {
-        makeSnippets(retData, messages);
+        app.checkAuthView.makeSnippets(data, messages);
       },
       error: function (data) {
         console.log(data);
