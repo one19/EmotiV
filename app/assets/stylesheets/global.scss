@@ -1,0 +1,93 @@
+@font-face {
+  font-family: 'fontello';
+  src: asset-url('fontello.eot');
+  src: asset-url('fontello.eot') format('embedded-opentype'),
+       asset-url('fontello.woff') format('woff'),
+       asset-url('fontello.ttf') format('truetype'),
+       asset-url('fontello.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+  margin-left: .2em; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+ 
+.icon-down-open:before { content: '\e801'; }
+.icon-chat:before { content: '\e802'; }
+
+.headerbg {
+  background-color: #226666;
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-bottom: 20px; 
+  height: 70px;
+  width: 100%;
+  z-index: 1;
+}
+
+.nav a {
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.nav {
+  list-style: none;
+  position: fixed;
+  z-index: 2;
+}
+.nav:first-child {
+  right: 0;
+  margin: 25px;
+}
+
+.nav:nth-child(2) {
+  right: 0;
+  margin: 25px 125px 25px 25px;
+}
+
+.usersname {
+  margin-right: 150px;
+}
+
+.icon-chat {
+  font-size: 35px;
+  color: gray;
+  position: fixed;
+  left: 50;
+  top: 0;
+  margin-top: 15px;
+  z-index: 2;
+}
+
+#logobg {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  background-color: #fff;
+  left: 0;
+  margin: 10px 50px;
+  z-index: 1;
+  border-radius: 50%;
+}
+
+#mainApp {
+  margin-top: 80px;
+  z-index: 1;
+}

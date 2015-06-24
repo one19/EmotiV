@@ -6,7 +6,7 @@
 
 .hometext {
   max-width: 700px;
-  margin: 50px auto 0;
+  margin: 0px auto 50px;
 }
 
 #video {
@@ -40,9 +40,37 @@ background-size: cover;
   font-size: 60px;
 }
 
-#heading-over-image p {
-  background-color: lightgrey;
-  font-size: 20px;
-  padding: 10px 1px;
+#authenticateButton {
+  box-sizing: border-box;
+  background-color: white;
+  opacity: 0.5;
+  margin: auto;
+  width: 90%;
+  height: 40px;
 }
+
+#heading-over-image p {
+  display: block;
+  color: black;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 40px;
+}
+.icon-down-open {
+  font-size: 70px;
+  color: #FFF;
+}
+
+#downarrow {
+  position: absolute;
+  top: 90%;
+  left: 45%;
+}
+
+a.slowly {
+  -webkit-transition: all 150ms ease;
+  transition: all 150ms ease;
+}
+
+
 

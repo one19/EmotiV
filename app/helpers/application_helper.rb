@@ -14,7 +14,7 @@ module ApplicationHelper
       nav += '<li class="nav">' + link_to('Log in', login_path) + '</li>'
     end
 
-    nav += '<a href="/"><div id="logobg"><h3>LOGO</h3><i class="icon-theatre"></i></div></a>'
+    nav += '<a href="/"><div id="logobg"><h3>LOGO</h3><i class="icon-chat"></i></div></a>'
 
     nav
   end
