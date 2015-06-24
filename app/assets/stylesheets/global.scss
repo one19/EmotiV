@@ -42,15 +42,12 @@
   z-index: 1;
 }
 
-.nav a {
+.nav {
   text-decoration: none;
   font-size: 16px;
-}
-
-.nav {
-  list-style: none;
   position: fixed;
   z-index: 2;
+  top: 0;
 }
 .nav:first-child {
   right: 0;
