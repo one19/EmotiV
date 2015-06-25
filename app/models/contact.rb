@@ -19,4 +19,5 @@ class Contact < ActiveRecord::Base
   belongs_to :user
 
   has_many :snippets
+  validates :name, :uniqueness => true
 end

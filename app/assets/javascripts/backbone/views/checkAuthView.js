@@ -6,6 +6,8 @@ var CLIENT_ID = '1063464784487-2ok02fg85mtp1ann5unfah32r7k3ppkb.apps.googleuserc
 
 var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 
+// var base64 = require('base64-js');
+
 app.CheckAuthView = Backbone.View.extend({
   el: '#mainApp',
 
@@ -67,13 +69,14 @@ app.CheckAuthView = Backbone.View.extend({
   },
 
   makeSnippets: function (emotMass, messages) {
-    var emotes = emotMass.toJSON();
+    var emotes = emotMass;
     for (var i = 0 ; i < messages.length ; i++ ) {
       var message = messages[i];
       var snippet = new app.Snippet();
+
       //checks for messages vs emails
       if ( message.result.payload.headers.length === 1 ) {
-        var infArra = message.payload.headers[0].value.split(' ');
+        var infArra = message.result.payload.headers[0].value.split(' ');
         var emailStr = infArra.pop().slice(1, -1);
         //if the message email is equal to the current user's
         if ( emailStr === app.email ) {
@@ -83,7 +86,7 @@ app.CheckAuthView = Backbone.View.extend({
           //checks if there is a pre-existing thread that we've spoken to, and if they've spoken back. Returns their id if they have, and dumps the whole shit-heap if they haven't.
           if (threadEmail) {
             var use = _.where(app.allContacts.models[0].attributes, "email_address = " + threadEmail.email );
-            snippet.set( 'contact_id', use[0] );
+            snippet.set( 'contact_id', parseInt(use[0]) );
           } else {
             return;
           };
@@ -91,8 +94,9 @@ app.CheckAuthView = Backbone.View.extend({
         } else {
           snippet.set( 'inbound', true );
           var use = _.where(app.allContacts.models[0].attributes, "email_address = " + emailStr );
-          snippet.set( 'contact_id', use[0] );
+          snippet.set( 'contact_id', parseInt(use[0]) );
         };
+
       //does the same checking for emails
       } else {
         var from = _.findWhere(message.result.payload.headers, {name: 'From'});
@@ -101,15 +105,18 @@ app.CheckAuthView = Backbone.View.extend({
           snippet.set( 'inbound', false );
           fromEmail = _.findWhere(message.result.payload.headers, {name: 'Delivered-To'}).value;
           var use = _.where(app.allContacts.models[0].attributes, "email_address = " + fromEmail );
-          snippet.set( 'contact_id', use[0] );
+          snippet.set( 'contact_id', parseInt(use[0]) );
         } else {
           snippet.set( 'inbound', true );
           var use = _.where(app.allContacts.models[0].attributes, "email_address = " + fromEmail );
-          snippet.set( 'contact_id', use[0] );
+          snippet.set( 'contact_id', parseInt(use[0]) );
         };
       };
-      snippet.set( 'content', emotMass[i] );
-      snippet.set( 'date', message.result.internalDate );
+      
+      //saves the snippet
+      var d = new Date(parseInt(message.result.internalDate));
+      snippet.set( 'context', JSON.stringify(emotMass[i]) );
+      snippet.set( 'date', d );
       snippet.set( 'gid', message.result.id );
       snippet.save();
     }
@@ -117,12 +124,13 @@ app.CheckAuthView = Backbone.View.extend({
 
   //this makes the contacts for a given message
   makeContacts: function (message) {
+    
+    //setup steps
     var contact = new app.Contact();
-
-
     app.contactEmails = app.contactEmails || [];
     app.currentUserContact = app.currentUserContact || [];
 
+    //this loop checks if the current list of contactEmails contains it's own email, if it doesn't, it appends that email to the contactEmails list. This is used later to eliminate messages from this user, with no 'to' address
     if ( !_.contains(app.contactEmails, app.email) ) {
       app.contactEmails.push(app.email);
     }
@@ -133,16 +141,22 @@ app.CheckAuthView = Backbone.View.extend({
       }
     }
 
+
+    // Start of the makeContacts function
     if ( message.payload.headers.length === 1 ) {
+
       //this is the loop that handles hangouts conversations
+      //setup:
       var infArra = message.payload.headers[0].value.split(' ');
       var emailStr = infArra.pop();
       
+      //this gets the email address out of the <> tags it's within
       contact.set( 'email_address', emailStr.slice(1, -1) );
-      //this is the conditional that removes any duplicate contacts from being saved to the database
+      //stops most duplicates from being posted
       if ( _.contains(app.contactEmails, contact.attributes.email_address) ) {
         return;
       } else {
+        //saves the contact
         app.contactEmails.push( contact.attributes.email_address );
 
         contact.set( 'name', infArra.join(' ') );
@@ -153,15 +167,17 @@ app.CheckAuthView = Backbone.View.extend({
 
     } else {
       //this is the loop that handles emails
+      //setup:
       var from = _.findWhere(message.payload.headers, {name: 'From'});
       from = from.value.split(' ')
       var fromEmail = from.pop().slice(1,-1);
       var fromName = from.join(' ');
       var toEmail = _.findWhere(message.payload.headers, {name: 'Delivered-To'}).value;
-
+      //this stops most duplicates from being posted
       if ( _.contains(app.contactEmails, fromEmail) ) {
         return
       } else {
+        //saves the contact
         app.contactEmails.push( fromEmail );
 
         contact.set( 'email_address', fromEmail)
@@ -174,23 +190,43 @@ app.CheckAuthView = Backbone.View.extend({
     }
   },
 
+  //takes in a batch of 100 responses, maps them to a big JSON request, and posts it to our sentiment API, on return, executes the snippet creation on the batch
   batchEmote: function (resp) {
-    var snippet = new app.Snippet();
-
+    //setup
     var messages = $.map(resp, function (el) {return el;});
     var emotMass = [];
+    //each message do:
     for ( var i = 0 ; i < messages.length ; i++ ) {
       var message = messages[i];
-      var text = window.atob(message.result.payload.body.data);
-      emotMass.push(text);
+      var text = [];
+      //conditional to handle hangouts vs gmail
+      if ( message.result.payload.body.data ) {
+        text = base64js.toByteArray( message.result.payload.body.data );
+      } else {
+        for ( var j = 0 ; j < message.result.payload.parts.length ; j++ ) {
+          if ( message.result.payload.parts[j].body.data ) {
+            text += base64js.toByteArray( message.result.payload.parts[j].body.data );
+          }
+        }
+      }
+      //turns that ugly-assed array of string chars into a beautiful butterfly(string)
+      var words = '';
+      for ( var k = 0 ; k < text.length ; k++ ) {
+        words += String.fromCharCode(text[k])
+      };
+      //var text = window.atob(message.result.payload.body.data);
+      emotMass.push(words);
     }
+
+    //ajax request for interfacing with the sentiment api. Returns a big batch of JSON sentiment responses
     $.ajax({
       url: 'http://sentiment.vivekn.com/api/batch/',
       method: "POST",
       dataType: "JSON",
       data: JSON.stringify( emotMass ),
+      //on success, make a function call to make snippets with the data returned from the ajax request, as well as all the message data, for everything not called context
       success: function (data) {
-        makeSnippets(retData, messages);
+        app.checkAuthView.makeSnippets(data, messages);
       },
       error: function (data) {
         console.log(data);
@@ -209,7 +245,7 @@ app.CheckAuthView = Backbone.View.extend({
     });
 
     request.execute( function (resp) {
-
+      //setup:
       var messages = resp.messages;
       var batch = gapi.client.newBatch();
       app.checkAuthView.appendPre('Messages:');
@@ -227,11 +263,10 @@ app.CheckAuthView = Backbone.View.extend({
         app.checkAuthView.appendPre('No messages input.');
       }
 
-      //this executes the batched get requests, and on completion adds parts of them to the page
+      //this executes the batched get requests, and on completion starts the contact making process, and finally the batched sentiment api call for the snippet making process
       batch.execute( function (resp) {
         //console.log(resp);
         var messages = $.map(resp, function (el) {return el;});
-
         app.threads = app.threads || [];
         //if the current message isn't for the sender, append the thread id and user email to an object stored in app.threads
         for ( var i = 0 ; i < messages.length ; i++ ) {
@@ -242,11 +277,13 @@ app.CheckAuthView = Backbone.View.extend({
           }
         }
 
+        //if we get messages back from gmail, start making contacts out of each of them
         if (messages.length > 0) {
           for (var i = 0; i < messages.length; i++) {
             var message = messages[i];
             app.checkAuthView.makeContacts(message.result);
           }
+        //if we get no messages, shit your pants
         } else {
           app.checkAuthView.appendPre('No messages found.');
         }
@@ -270,6 +307,7 @@ app.CheckAuthView = Backbone.View.extend({
     pre.appendChild(textContent);
   },
 
+  //renders the view... duh.
   render: function () {
     var appTemplate = $('#authorizeView').html();
     this.$el.html(appTemplate);
