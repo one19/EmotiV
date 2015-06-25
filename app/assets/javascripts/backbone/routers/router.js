@@ -24,6 +24,8 @@ app.Router = Backbone.Router.extend({
       app.userSnippets = new app.Snippets( app.allSnippets.where({ 
         contact_id: parseInt(id)
       }));
+      app.graphView = new app.GraphView ( app.userSnippets );
+      app.graphView.render();
       app.userSnippets.each( function ( snippet ) {
         app.snippetView = new app.SnippetView( {model:snippet} );
         app.snippetView.render();
