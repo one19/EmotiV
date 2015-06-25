@@ -55,5 +55,4 @@ app.updateFeels = function () {
       console.log("ERRORORORORORROR")
     });
   }
-  debugger;
 };
