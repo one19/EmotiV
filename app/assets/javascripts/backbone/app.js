@@ -12,7 +12,6 @@ $(document).ready(function() {
   // creates a collection with all contacts to display
   app.allContacts = new app.Contacts();
   app.allContacts.fetch().done(function (){
-    console.log(app.allContacts.models);
     // start the main app router to handle linking between backbone views
     app.router = new app.Router();
     Backbone.history.start();
