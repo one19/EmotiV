@@ -83,18 +83,17 @@ app.CheckAuthView = Backbone.View.extend({
           snippet.set( 'inbound', false );
           var threadEmail = '';
           threadEmail = _.findWhere(app.threads, {thread: message.result.threadId});
+          var theEmail = threadEmail.email.split(' ').pop();
           //checks if there is a pre-existing thread that we've spoken to, and if they've spoken back. Returns their id if they have, and dumps the whole shit-heap if they haven't.
-          if (threadEmail) {
-            var use = _.where(app.allContacts.models[0].attributes, "email_address = " + threadEmail.email );
-            snippet.set( 'contact_id', parseInt(use[0]) );
-          } else {
-            return;
+          if (theEmail.slice(1,-1) !== app.email) {
+            var use = app.allContacts.findWhere( {email_address: theEmail.slice(1,-1)} );
+            snippet.set( 'contact_id', parseInt(use.id) );
           };
 
         } else {
           snippet.set( 'inbound', true );
-          var use = _.where(app.allContacts.models[0].attributes, "email_address = " + emailStr );
-          snippet.set( 'contact_id', parseInt(use[0]) );
+          var use = app.allContacts.findWhere( {email_address: emailStr} );
+          snippet.set( 'contact_id', parseInt(use.id) );
         };
 
       //does the same checking for emails
@@ -103,16 +102,18 @@ app.CheckAuthView = Backbone.View.extend({
         var fromEmail = from.value.split(' ').pop().slice(1,-1);
         if ( fromEmail === app.email ) {
           snippet.set( 'inbound', false );
-          fromEmail = _.findWhere(message.result.payload.headers, {name: 'Delivered-To'}).value;
-          var use = _.where(app.allContacts.models[0].attributes, "email_address = " + fromEmail );
-          snippet.set( 'contact_id', parseInt(use[0]) );
+          var delivEmail = _.findWhere(message.result.payload.headers, {name: 'Delivered-To'}).value;
+          if (delivEmail !== fromEmail) {
+            var use = app.allContacts.findWhere( {email_address: delivEmail} );
+            snippet.set( 'contact_id', parseInt(use.id) );
+          }
         } else {
           snippet.set( 'inbound', true );
-          var use = _.where(app.allContacts.models[0].attributes, "email_address = " + fromEmail );
-          snippet.set( 'contact_id', parseInt(use[0]) );
+          var use = app.allContacts.findWhere( {email_address: fromEmail} );
+          snippet.set( 'contact_id', parseInt(use.id) );
         };
       };
-      
+
       //saves the snippet
       var d = new Date(parseInt(message.result.internalDate));
       snippet.set( 'context', JSON.stringify(emotMass[i]) );
@@ -162,7 +163,14 @@ app.CheckAuthView = Backbone.View.extend({
         contact.set( 'name', infArra.join(' ') );
         contact.set( 'user_id', parseInt(app.user_id) );
         contact.set( 'threadIds', message.payload.threadId )
-        contact.save();
+        contact.save().done(function (result) {
+          // contact.set('id', result.id);
+          console.log(contact);
+          app.allContacts.add(contact);
+        });
+
+        // need fetch before add to collection to get id
+
       }
 
     } else {
@@ -184,7 +192,12 @@ app.CheckAuthView = Backbone.View.extend({
         contact.set( 'name', fromName );
         contact.set( 'user_id', parseInt(app.user_id) );
         contact.set( 'threadIds', message.payload.threadId )
-        contact.save();
+        contact.save().done(function (result) {
+          console.log(contact);
+          app.allContacts.add(contact);
+        });
+
+        app.allContacts.add(contact);
       }
       
     }
