@@ -8,7 +8,7 @@ class SessionController < ApplicationController
       session[:user] = user.id #because otherwise all their data is being stored in the server while they're logged in, possibly bogging everything down as fuckkkkkk
 
       #session[:start] = Time.now --you could use this as a backbone for something elsewhere to stop someone from making changes after a certain amount of time. session timeout
-      render :json => {:status => 'okay'}
+      render :json => {:status => 'okay', :user => user}
       # redirect_to root_path
     else
       # flash[:notice] = "Invalid login, please try again"

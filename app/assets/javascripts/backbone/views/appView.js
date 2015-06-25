@@ -78,7 +78,7 @@ app.AppView = Backbone.View.extend({
 
 
     user.save().done( function() {
-      app.router.navigate('', true);
+      app.router.navigate('/', true);
       $('#name, .user_register .email, #password, #confpassword').val('');
     });
 
@@ -90,11 +90,18 @@ app.AppView = Backbone.View.extend({
     var email = $('#email').val();
     var password = $('#password').val();
 
-    var user = new app.User.find_by({
-      email: email,
-      password: password
+    $.ajax({
+      url: "/login",
+      method: "POST",
+      data: {
+        email: email,
+        password: password
+      }
+    }).done(function (data) {
+      console.log(data);
+      app.currentUser = data.user;
+      window.location.replace('/');
     });
-
 
   }
 
