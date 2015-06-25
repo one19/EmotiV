@@ -1,3 +1,5 @@
+<div class="g-signin2" data-onsuccess="onSignIn" style="display:none"></div>
+
 <!-- Hack to get user_id into JS environment -->
 <script>
 app.user_id = <%= @current_user? @current_user.id : 'undefined' %>;
@@ -49,7 +51,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
     <section class="popupBody">
       <!-- Social Login -->
       <div class="social_login">
-        <div class="g-signin2" data-onsuccess="onSignIn">
+        <div class="connect_with_google">
           <a href="#" class="social_box google">
             <span class="icon"><i class="icon-gplus"></i></span>
             <span class="icon_title">Connect with Google</span>

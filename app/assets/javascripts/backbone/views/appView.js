@@ -11,7 +11,7 @@ app.AppView = Backbone.View.extend({
     'click .back_btn': 'backBtn',
     'click #register_button': 'onRegister',
     'click #login_button': 'onLogin',
-    'click .g-signin2': 'onSignIn'
+    'click .connect_with_google': 'fakeSignIn'
   },
 
   initialize: function () {
@@ -35,17 +35,6 @@ app.AppView = Backbone.View.extend({
       overlay : 0.6, 
       closeButton: ".modal_close" 
     });
-  },
-
-  onSignIn: function (googleUser) {
-  gapi.auth.init({
-  client_id: '782401865609-45elmgu6tk2j5avkifha4ru1nlopka4k.apps.googleusercontent.com'
-  })
-  var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail());
   },
 
   authPage: function () {
@@ -115,6 +104,10 @@ app.AppView = Backbone.View.extend({
       window.location.replace('/');
     });
 
+  },
+
+  fakeSignIn: function () {
+    $('.g-signin2 > div').click();
   }
 
 
