@@ -1,5 +1,22 @@
 var app = app || {};
 
+app.plzUpdateAjaxGods = function () {
+  if (app.user_id && app.currentUserContact.length >= 1 ) {
+    app.updateFeels();
+    console.log('WHAMMY');  
+  } else {
+    console.log("MISSED AGAIN YA DICKHEAD");
+  }
+};
+app.loadHome = function () {
+  app.appView = new app.AppView({collection: app.allContacts});
+  app.allSnippets = new app.Snippets();
+  app.allSnippets.fetch().done(function () {
+    app.appView.render();
+    console.log('when');
+  });
+};
+
 app.Router = Backbone.Router.extend({
   routes: {
     '': 'home',
@@ -10,17 +27,28 @@ app.Router = Backbone.Router.extend({
   home: function () {
     console.log("home view");
     app.appView = new app.AppView({collection: app.allContacts});
-    
     app.allSnippets = new app.Snippets();
     app.allSnippets.fetch().done(function () {
-      app.appView.render();
-    });
 
-    if (app.user_id && app.userSnippets) {
-      app.updateFeels().done(function(){
-        app.appView.render();
-      });  
-    }
+    // List out all the contacts the user has
+    app.currentUserContact = [];
+    app.allContacts.each( function (contact) {
+      if (contact.get('user_id') === app.user_id) {
+        app.currentUserContact.push(contact);
+      }
+    });
+    }).done(function(){
+      app.plzUpdateAjaxGods();
+    }).done(function(){
+      console.log('done');
+    }).done(function(){
+      app.appView.render();
+    }).done(function(){
+      console.log('rendered');
+    });
+    // $.when(app.loadHome()).done(function(){
+    //   console.log('done');
+    //   app.plzUpdateAjaxGods()});
   },
 
   viewContact: function (id) {
