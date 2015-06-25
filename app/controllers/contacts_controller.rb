@@ -112,7 +112,7 @@ class ContactsController < ApplicationController
       name = @xml_array[ind]['contact_name'] + ' SMS'
       snip.contact_id = Contact.where({ name: name })[0].id
       # snip.context = @xml_obj_array[ind][:snippet_stats]
-      snip.context = @snip_stats[ind]
+      snip.context = @snip_stats[ind].to_json
       snip.date = @xml_array[ind]['readable_date']
       # binding.pry
       snip.save
