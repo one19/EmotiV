@@ -16,6 +16,12 @@ app.updateFeels = function () {
     // Array of all snippets belonging to each of the user's contacts
     var snip = app.allSnippets.where({contact_id: app.currentUserContact[i].attributes.id});
 
+    var snipCurrent = app.allSnippets.where({contact_id: app.currentUserContact[i].attributes.id})[app.allSnippets.where({contact_id: app.currentUserContact[i].attributes.id}).length-1];
+    if (snipCurrent) {
+      var currentContext = JSON.parse(snipCurrent.attributes.context);
+      currentFeel = currentContext.confidence;
+    }
+
     // Array of all snippets where result is negative
     var snipNeg = _.filter( snip, function (snippet) {return JSON.parse(snippet.attributes.context).result === "Negative"});
     // Determines lowestFeel for each currentUserContact
@@ -41,12 +47,13 @@ app.updateFeels = function () {
     contact.set("lowFeel", lowestFeel);
     contact.set("highFeel", highestFeel);
     contact.set("weekFeel", 0);
-    contact.set("currentFeel", 0);
+    contact.set("currentFeel", currentFeel);
     contact.save().done(function (data) {
       console.log("HELLO!", data);
     }).error(function () {
       console.log("ERRORORORORORROR")
     });
   }
+  app.appView.render();
   
 };
