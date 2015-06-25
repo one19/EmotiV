@@ -55,6 +55,5 @@ app.updateFeels = function () {
       console.log("ERRORORORORORROR")
     });
   }
-  app.appView.render();
   
 };

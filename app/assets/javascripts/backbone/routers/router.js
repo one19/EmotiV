@@ -15,6 +15,12 @@ app.Router = Backbone.Router.extend({
     app.allSnippets.fetch().done(function () {
       app.appView.render();
     });
+
+    if (app.user_id && app.userSnippets) {
+      app.updateFeels().done(function(){
+        app.appView.render();
+      });  
+    }
   },
 
   viewContact: function (id) {
@@ -35,7 +41,11 @@ app.Router = Backbone.Router.extend({
       app.snippetView.render();
     });  
     })
-    
+    if (app.user_id && app.userSnippets) {
+      app.updateFeels().done(function(){
+        app.contactView.render();
+      });  
+    }
   },
 
   //testing framework for us to test styles/links ect.
