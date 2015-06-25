@@ -6,7 +6,7 @@
   box-sizing: border-box;
   margin: 200px auto 50px;
   width: 25%;
-  height: 50%;
+  height: 45%;
   padding: 2.5%; 
 }
 
@@ -14,7 +14,7 @@
   font-size: 20px;
   text-align: center;
   line-height: 1.5em;
-  margin-top: 15%;
+  margin-top: 12%;
 }
 
 #authorize-button {
