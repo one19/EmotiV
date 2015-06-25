@@ -19,6 +19,8 @@ app.Router = Backbone.Router.extend({
 
   viewContact: function (id) {
     console.log('Individual contact view',id);
+    app.allSnippets = new app.Snippets();
+    app.allSnippets.fetch().done(function(){
     var contact = app.allContacts.get(id);
     app.contactView = new app.ContactView({model: contact});
     app.contactView.render();
@@ -31,7 +33,9 @@ app.Router = Backbone.Router.extend({
     app.userSnippets.each( function ( snippet ) {
       app.snippetView = new app.SnippetView( {model:snippet} );
       app.snippetView.render();
-    });
+    });  
+    })
+    
   },
 
   //testing framework for us to test styles/links ect.

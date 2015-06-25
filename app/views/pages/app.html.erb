@@ -181,7 +181,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
     <li>Email: {{ email_address }}</li>
     <hr class="contact-hr">
     <li>Weeks average feeling: {{ weekFeel }}</li>
-    <li>Current feeling: {{ currentFeel }}</li>
+    <li>Current feeling: {{feedback}} {{ currentFeel }}</li>
     <li>Highest feeling: {{ highFeel }}</li>
     <li>Lowest feeling: {{ lowFeel }}</li>
     <hr class="contact-hr">
