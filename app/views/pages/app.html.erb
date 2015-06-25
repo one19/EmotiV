@@ -187,7 +187,9 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
     <li>Highest feeling: {{ highFeel }}</li>
     <li>Lowest feeling: {{ lowFeel }}</li>
     <hr class="contact-hr">
-    <div id="flotHere"></div>
+  </div>
+  <div id="flotHere"></div>
+  <div class="contact-info">
     <div id="snippetsHere"></div>
   </div>
 </script>
@@ -203,11 +205,11 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 <script id="authorizeView" type="text/template">
 
   <div id="video">
-    <img src=http://www.fillmurray.com/1300/550>
+    <source src="<%= asset_path "romance.mp4" %>" />
   </div>
 
   <div id="authorize-div">
-    <p id="authorize-label">Allow EmotiV to access your emails</p>
+    <p id="authorize-label">Allow EmotiV to access your 100 of your emails:</p>
     <!--Button for the user to click to initiate auth sequence -->
     <button id="authorize-button">
       Allow
