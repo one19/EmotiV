@@ -26,30 +26,41 @@
 
 .btn  {
     padding: 10px 20px;
-     background:  #F4F4F2;
+    background: #1ABC9C;
+    font-size: 16px;
 }
-
-.btn_red  {
-    background:  #ED6347;
-     color:  #FFF;
+.darker {
+  background: #16A085;
 }
 
 .btn:hover  {
-    background:  #E4E4E2;
+    background: #E4E4E2;
 }
 
 .btn_red:hover  {
-    background:  #C12B05;
+    background: #C12B05;
 }
 
 a.btn  {
-    color: #666;
-     text-align:  center;
-     text-decoration:  none;
+     text-align: center;
+     text-decoration: none;
 }
 
-a.btn_red  {
-    color:  #FFF;
+.back_btn {
+  background: #34495E;
+  display: block;
+}
+
+/*.login_back {
+  margin-bottom: -40px;
+}
+*/
+#login_button {
+  border: 0;
+  color: #FFF;
+  font-size: 16px;
+  padding: 10px 0px;
+  width: 100%;
 }
 
 /* Popup Styles*/
@@ -72,17 +83,13 @@ a.btn_red  {
 .social_login .icon  {
     display: block;
      width: 10px;
-     padding: 5px 10px;
+     padding: 5px 15px 5px 5px;
      margin-right:  10px;
      float: left;
      color: #FFF;
      font-size: 16px;
      text-align:  center;
 }
- 
-/*.social_login .fb .icon  {
-    background: #3B5998;
-}*/
  
 .social_login .google .icon  {
     background: #DD4B39;
@@ -100,7 +107,20 @@ a.btn_red  {
 .social_login .social_box:hover  {
     background:  #E4E4E2;
 }
- 
+
+.email-icon-background {
+  background-color: silver;
+  border-radius: 50%;
+  height: 50px;
+  margin: 5px auto 15px;
+  width: 50px;
+}
+
+.icon-mail {
+  font-size: 20px;
+  line-height: 47px;
+  margin: 23%;
+}
  
 .centeredText  {
     text-align:  center;
@@ -133,15 +153,11 @@ a.btn_red  {
 .user_login input[type="text"],  .user_login input[type="email"],  .user_login input[type="password"]  {
     display:  block;
      width: 90%;
-     padding:  10px;
+     padding:  20px 10px;
      border: 1px solid #DDD;
      color: #666;
-}
-
-.user_login .checkbox  {
-    margin-bottom:  10px;
-     clear:  both;
-     overflow:  hidden;
+     margin: 5px auto;
+     font-size: 16px;
 }
 
 .forgot_password  {
@@ -165,6 +181,7 @@ a.btn_red  {
      border: 1px solid #DDD;
      color: #666;
      margin: 5px auto;
+     font-size: 16px;
 }
  
 .center-or {
