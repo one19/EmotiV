@@ -18,7 +18,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
     <source src="<%= asset_path "romance.mp4" %>" />
   </video>
   <div id="heading-over-image">
-    <h1>EmotiV</h1>
+    <h1>!(She loves me)</h1>
     <div id="authenticateButton">
       <p class="authenticateLink">Get Started</p>
     </div>
@@ -50,13 +50,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
     <section class="popupBody">
       <!-- Social Login -->
       <div class="social_login">
-        <div class="">
-          <!-- <a href="#" class="social_box fb">
-            <span class="icon"><i class="fa fa-facebook"></i></span>
-            <span class="icon_title">Connect with Facebook</span>
-            
-          </a> -->
-
+        <div class="g-signin2" data-onsuccess="onSignIn">
           <a href="#" class="social_box google">
             <span class="icon"><i class="icon-gplus"></i></span>
             <span class="icon_title">Connect with Google</span>
@@ -64,7 +58,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
         </div>
 
         <span class="center-or">or</span>
-        <hr>
+        <hr class="or-hr">
 
         <div class="email-icon-background"><i class="icon-mail"></i></div>
 
@@ -182,13 +176,15 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 </script>
 
 <script id="contactView" type="text/template">
-  <div>
-    <li>Contact name: {{ name }}</li>
+  <div class="contact-info">
+    <h2 class="contact-name">{{ name }}</h2>
     <li>Email: {{ email_address }}</li>
+    <hr class="contact-hr">
     <li>Weeks average feeling: {{ weekFeel }}</li>
     <li>Current feeling: {{ currentFeel }}</li>
     <li>Highest feeling: {{ highFeel }}</li>
     <li>Lowest feeling: {{ lowFeel }}</li>
+    <hr class="contact-hr">
     <div id="flotHere"></div>
     <div id="snippetsHere"></div>
   </div>
