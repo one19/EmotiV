@@ -1,11 +1,14 @@
 var app = app || {};
 
 app.plzUpdateAjaxGods = function () {
-  if (app.user_id && app.userSnippets) {
+  if (app.user_id && app.currentUserContact.length >= 1 ) {
     app.updateFeels().done(function(){
-      // app.appView.render();
+      console.log('WHAMMY');
     });  
+  } else {
+    console.log("MISSED AGAIN YA DICKHEAD");
   }
+  debugger;
 };
 app.loadHome = function () {
   app.appView = new app.AppView({collection: app.allContacts});
@@ -25,15 +28,17 @@ app.Router = Backbone.Router.extend({
 
   home: function () {
     console.log("home view");
-    // debugger;
     app.appView = new app.AppView({collection: app.allContacts});
     app.allSnippets = new app.Snippets();
     app.allSnippets.fetch().done(function () {
       debugger;
-      console.log(app.allSnippets);
-    //   app.appView.render()
-    // }).done(function(){
-    //   console.log('when');
+    // List out all the contacts the user has
+    app.currentUserContact = [];
+    app.allContacts.each( function (contact) {
+      if (contact.get('user_id') === app.user_id) {
+        app.currentUserContact.push(contact);
+      }
+    });
     }).done(function(){
       app.plzUpdateAjaxGods();
     }).done(function(){
@@ -56,9 +61,9 @@ app.Router = Backbone.Router.extend({
     app.contactView = new app.ContactView({model: contact});
     app.contactView.render();
 
-    app.userSnippets = new app.Snippets( app.allSnippets.where({ 
-      contact_id: parseInt(id)
-    }));
+    // app.userSnippets = new app.Snippets( app.allSnippets.where({ 
+    //   contact_id: parseInt(id)
+    // }));
     app.graphView = new app.GraphView ( app.userSnippets );
     app.graphView.render();
     app.userSnippets.each( function ( snippet ) {
