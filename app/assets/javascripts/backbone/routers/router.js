@@ -10,27 +10,32 @@ app.Router = Backbone.Router.extend({
   home: function () {
     console.log("home view");
     app.appView = new app.AppView({collection: app.allContacts});
-    app.appView.render();
+    
+    app.allSnippets = new app.Snippets();
+    app.allSnippets.fetch().done(function () {
+      app.appView.render();
+    });
   },
 
   viewContact: function (id) {
     console.log('Individual contact view',id);
+    app.allSnippets = new app.Snippets();
+    app.allSnippets.fetch().done(function(){
     var contact = app.allContacts.get(id);
     app.contactView = new app.ContactView({model: contact});
     app.contactView.render();
 
-    app.allSnippets = new app.Snippets();
-    app.allSnippets.fetch().done( function (snippet) {
-      app.userSnippets = new app.Snippets( app.allSnippets.where({ 
-        contact_id: parseInt(id)
-      }));
-      app.graphView = new app.GraphView ( app.userSnippets );
-      app.graphView.render();
-      app.userSnippets.each( function ( snippet ) {
-        app.snippetView = new app.SnippetView( {model:snippet} );
-        app.snippetView.render();
-      })
-    });
+    app.userSnippets = new app.Snippets( app.allSnippets.where({ 
+      contact_id: parseInt(id)
+    }));
+    app.graphView = new app.GraphView ( app.userSnippets );
+    app.graphView.render();
+    app.userSnippets.each( function ( snippet ) {
+      app.snippetView = new app.SnippetView( {model:snippet} );
+      app.snippetView.render();
+    });  
+    })
+    
   },
 
   //testing framework for us to test styles/links ect.
