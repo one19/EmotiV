@@ -1,5 +1,19 @@
+.contact-info {
+  width: 50%;
+  margin: 150px auto;
+}
+
 .contact-name {
-  font-size: 25px;
+  font-size: 30px;
   text-align: center;
 }
 
+.contact-hr {
+  border: 0;
+  border-bottom: 1px solid #dce0e0;
+}
+
+li {
+  font-size: 16px;
+  line-height: 1.5em;
+}
