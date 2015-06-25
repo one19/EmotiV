@@ -15,25 +15,6 @@ app.GraphView = Backbone.View.extend({
       feelz.push( JSON.parse(snip.context) );
     }
 
-    var options = {
-      series: {
-        lines: { show: true },
-        points: { show: true }
-      },
-      xaxis: {
-        mode: "time",
-        timezone: 'Sydney',
-        timeformat: "%m/%d/%y",
-        //minTickSize: [1, "day"],
-        min: _.first(datez),
-        max: _.last(datez)
-      },
-      yaxis: {
-        min: 0,
-        max: 100
-      }
-    };
-
     var formyz = [];
     for ( var i = 0 ; i < feelz.length ; i++ ) {
       if ( i === 1 ) {
@@ -49,16 +30,36 @@ app.GraphView = Backbone.View.extend({
         formyz.push( (_.last(formyz) + parseInt(feelz[i].confidence) - 50 ) / 2 );
       }
     }
+
+    var options = {
+      series: {
+        lines: { show: true, fill: true, fillColor: "rgba(255, 255, 255, 0.8)" },
+        points: { show: true, fill: false }
+      },
+      xaxis: {
+        mode: "time",
+        //timeformat: "%m/%d/%y",
+        //minTickSize: [1, "day"],
+        min: _.min(datez),
+        max: _.max(datez)
+      },
+      yaxis: {
+        mode: 'number',
+        min: _.min(formyz),
+        max: _.max(formyz)
+      }
+    };
     //var series1 = [ [1,2], [2,4], [5,3], [6,9] ];
     //var series2 = [ [5,3], [7,6], [3,2], [4,3] ];
     
     //var data = [ { label: "Foo", data: [series1, series2] }, { label: "Bar", data: [ [11, 13], [19, 11], [30, -7] ] }];
     var series = []
     for ( var j = 0 ; j < feelz.length ; j++ ) {
-      series.push([datez[j], formyz[j]]);
-    };
-    
-    var plot = $.plot($('#flotHere'), series, options );
+      series.push( [ datez[j] , Math.round(formyz[j]) ] );
+      // series.push( [ Math.round(formyz[j]), datez[j] ] );
+    }; 
+    var final = _.sortBy(series, function(el) {return el[0]})
+    $.plot($('#flotHere'), [{ label: "feels", data: final }], options );
     // $.plot(
     //   $("#flotHere"), 
     //   {data: series, label: "Likeability"},
