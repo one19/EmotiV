@@ -17,15 +17,21 @@ app.updateFeels = function () {
     var snip = app.allSnippets.where({contact_id: app.currentUserContact[i].attributes.id});
     // Array of all snippets where result is negative
     var snipNeg = _.filter( snip, function (snippet) {return JSON.parse(snippet.attributes.context).result === "Negative"});
-    // snipNeg.each
+    _.each(snipNeg, function (snip) {
+      var confidence = parseInt(JSON.parse(snip.attributes.context).confidence);
+      if (confidence > lowestFeel) {
+        lowestFeel = confidence
+      }
+    });
+    // Array of all snippets where result is positive
     var snipPos = _.filter( snip, function (snippet) {return JSON.parse(snippet.attributes.context).result === "Positive"});
+    _.each(snipPos, function (snip) {
+      var confidence = parseInt(JSON.parse(snip.attributes.context).confidence);
+      if (confidence > highestFeel) {
+        highestFeel = confidence
+      }
+    });
     debugger;
-
-      // Turn snippet.context into an object
-      // s = JSON.parse(snip[x].attributes.context);
-      // Change confidence into integer for comparing
-      // confidence = parseInt(s.confidence);
-      
   }
   
   console.log('Highest Feel:',highestFeel,'Lowest Feel:', lowestFeel);
