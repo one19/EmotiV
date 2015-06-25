@@ -16,6 +16,7 @@ app.updateFeels = function () {
     // Array of all snippets belonging to each of the user's contacts
     var snip = app.allSnippets.where({contact_id: app.currentUserContact[i].attributes.id});
 
+    // Gets the latest snippet which we will extract the numerical value of the confidence for currentFeel
     var snipCurrent = app.allSnippets.where({contact_id: app.currentUserContact[i].attributes.id})[app.allSnippets.where({contact_id: app.currentUserContact[i].attributes.id}).length-1];
     if (snipCurrent) {
       var currentContext = JSON.parse(snipCurrent.attributes.context);

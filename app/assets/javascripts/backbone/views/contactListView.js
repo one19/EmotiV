@@ -9,7 +9,20 @@ app.ContactListView = Backbone.View.extend({
     var contactListTemplate = $('#contactListView').html();
     var contactListHTML = _.template(contactListTemplate);
 
-    var toAppend = this.$el.html( contactListHTML( this.model.toJSON() ) );
+    // Gets all related snippets
+    var allRelatedSnippets = app.allSnippets.where({
+      contact_id: this.model.toJSON().id
+    });
+
+    // Get the positive/negative/neutral aspect for the currentFeel
+    var feedback = JSON.parse( allRelatedSnippets[ allRelatedSnippets.length - 1 ].toJSON().context ).result;
+
+    // Adds a feedback attribute to the contact to display in app.html.erb
+    var forTemplate = this.model.toJSON();
+    forTemplate.feedback = feedback;
+
+    // passes in new template so as to include feedback variable :)
+    var toAppend = this.$el.html( contactListHTML( forTemplate ) );
     $("#mainApp").append( toAppend );
   },
   showContact: function () {

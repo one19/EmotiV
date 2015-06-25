@@ -12,9 +12,9 @@ app.Router = Backbone.Router.extend({
     app.appView = new app.AppView({collection: app.allContacts});
     
     app.allSnippets = new app.Snippets();
-    app.allSnippets.fetch();
-
-    app.appView.render();
+    app.allSnippets.fetch().done(function () {
+      app.appView.render();
+    });
   },
 
   viewContact: function (id) {
