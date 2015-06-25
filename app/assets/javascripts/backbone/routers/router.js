@@ -1,5 +1,21 @@
 var app = app || {};
 
+app.plzUpdateAjaxGods = function () {
+  if (app.user_id && app.userSnippets) {
+    app.updateFeels().done(function(){
+      // app.appView.render();
+    });  
+  }
+};
+app.loadHome = function () {
+  app.appView = new app.AppView({collection: app.allContacts});
+  app.allSnippets = new app.Snippets();
+  app.allSnippets.fetch().done(function () {
+    app.appView.render();
+    console.log('when');
+  });
+};
+
 app.Router = Backbone.Router.extend({
   routes: {
     '': 'home',
@@ -9,18 +25,27 @@ app.Router = Backbone.Router.extend({
 
   home: function () {
     console.log("home view");
+    // debugger;
     app.appView = new app.AppView({collection: app.allContacts});
-    
     app.allSnippets = new app.Snippets();
     app.allSnippets.fetch().done(function () {
+      debugger;
+      console.log(app.allSnippets);
+    //   app.appView.render()
+    // }).done(function(){
+    //   console.log('when');
+    }).done(function(){
+      app.plzUpdateAjaxGods();
+    }).done(function(){
+      console.log('done');
+    }).done(function(){
       app.appView.render();
+    }).done(function(){
+      console.log('rendered');
     });
-
-    if (app.user_id && app.userSnippets) {
-      app.updateFeels().done(function(){
-        app.appView.render();
-      });  
-    }
+    // $.when(app.loadHome()).done(function(){
+    //   console.log('done');
+    //   app.plzUpdateAjaxGods()});
   },
 
   viewContact: function (id) {
