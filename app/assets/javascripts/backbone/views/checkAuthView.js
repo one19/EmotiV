@@ -35,12 +35,12 @@ app.CheckAuthView = Backbone.View.extend({
   handleAuthResult: function (authResult) {
     var authorizeDiv = document.getElementById('authorize-div');
     if (authResult && !authResult.error) {
-      console.log('success')
+      //console.log('success')
       // Hide auth UI, then load client library.
       authorizeDiv.style.display = 'none';
       app.checkAuthView.loadGmailApi();
     } else {
-      console.log('failure')
+      //console.log('failure')
       // Show auth UI, allowing the user to initiate authorization by
       // clicking authorize button.
       authorizeDiv.style.display = 'inline';
@@ -71,6 +71,7 @@ app.CheckAuthView = Backbone.View.extend({
   makeSnippets: function (emotMass, messages) {
     var emotes = emotMass;
     for (var i = 0 ; i < messages.length ; i++ ) {
+      console.log("I: ", i);
       var message = messages[i];
       var snippet = new app.Snippet();
 
@@ -114,12 +115,27 @@ app.CheckAuthView = Backbone.View.extend({
         };
       };
 
+      var completed = function ( messages, i ) {
+        // console.log("\n\n\n\n\nWOOOWONKANKNKNKNESLKFNLWKFNLWKMNLKMLALKNLKANSLKMLKNFLKWN\n\n\n\n");
+        // console.log( messages, messages.length, i++ );
+        // console.warn( i, messages.length - 1, "DO THEY EQUAL!", i === messages.length -1 );
+        if ( i === messages.length ) {
+          // console.log("\n\n\n\n\nWOOOWONKANKNKNKNESLKFNLWKFNLWKMNLKMLALKNLKANSLKMLKNFLKWN\n\n\n\n");
+          app.router.navigate('/', true);
+          return;
+        }
+      }
+
       //saves the snippet
       var d = new Date(parseInt(message.result.internalDate));
       snippet.set( 'context', JSON.stringify(emotMass[i]) );
       snippet.set( 'date', d );
       snippet.set( 'gid', message.result.id );
-      snippet.save();
+      snippet.save().always( function () {
+        // console.log("PLEASE ", messages.length, i, messages.length === i);
+        completed( messages, i );
+        return false;
+      });
     }
   },
 
@@ -165,7 +181,7 @@ app.CheckAuthView = Backbone.View.extend({
         contact.set( 'threadIds', message.payload.threadId )
         contact.save().done(function (result) {
           // contact.set('id', result.id);
-          console.log(contact);
+          //console.log(contact);
           app.allContacts.add(contact);
         });
 
@@ -193,7 +209,7 @@ app.CheckAuthView = Backbone.View.extend({
         contact.set( 'user_id', parseInt(app.user_id) );
         contact.set( 'threadIds', message.payload.threadId )
         contact.save().done(function (result) {
-          console.log(contact);
+          //console.log(contact);
           app.allContacts.add(contact);
         });
 
@@ -242,7 +258,7 @@ app.CheckAuthView = Backbone.View.extend({
         app.checkAuthView.makeSnippets(data, messages);
       },
       error: function (data) {
-        console.log(data);
+        //console.log(data);
       }
     });
 
@@ -254,14 +270,14 @@ app.CheckAuthView = Backbone.View.extend({
   grabHundred: function () {
     var request = gapi.client.gmail.users.messages.list({
       'userId': 'me',
-      //'pageToken': page
+      //'pageToken': 1
     });
 
     request.execute( function (resp) {
       //setup:
       var messages = resp.messages;
       var batch = gapi.client.newBatch();
-      app.checkAuthView.appendPre('Messages:');
+      app.checkAuthView.appendPre('LOADING MESSAGES');
 
 
       //this generates the batch file for every email id in our 100 responses from the server

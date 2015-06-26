@@ -14,16 +14,22 @@ app.ContactListView = Backbone.View.extend({
       contact_id: this.model.toJSON().id
     });
 
-    // Get the positive/negative/neutral aspect for the currentFeel
-    var feedback = JSON.parse( allRelatedSnippets[ allRelatedSnippets.length - 1 ].toJSON().context ).result;
+    try {
+      
 
-    // Adds a feedback attribute to the contact to display in app.html.erb
-    var forTemplate = this.model.toJSON();
-    forTemplate.feedback = feedback;
+      // Get the positive/negative/neutral aspect for the currentFeel
+      var feedback = JSON.parse( allRelatedSnippets[ allRelatedSnippets.length - 1 ].toJSON().context ).result;
 
-    // passes in new template so as to include feedback variable :)
-    var toAppend = this.$el.html( contactListHTML( forTemplate ) );
-    $("#mainApp").append( toAppend );
+      // Adds a feedback attribute to the contact to display in app.html.erb
+      var forTemplate = this.model.toJSON();
+      forTemplate.feedback = feedback;
+
+      // passes in new template so as to include feedback variable :)
+      var toAppend = this.$el.html( contactListHTML( forTemplate ) );
+      $("#mainApp").append( toAppend );
+    } catch (err) {
+
+    }
   },
   showContact: function () {
     app.router.navigate('contacts/' + this.model.get('id'),true);

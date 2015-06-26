@@ -42,17 +42,21 @@ app.updateFeels = function () {
       }
     });
 
-    console.log(app.allContacts.find({id: app.currentUserContact[i].attributes.id}).attributes.name,'Highest Feel:',highestFeel,'Lowest Feel:', lowestFeel);
+    // console.log(app.allContacts.find({id: app.currentUserContact[i].attributes.id}).attributes.name,'Highest Feel:',highestFeel,'Lowest Feel:', lowestFeel);
 
-    var contact = app.allContacts.find({id: app.currentUserContact[i].attributes.id});
-    contact.set("lowFeel", lowestFeel);
-    contact.set("highFeel", highestFeel);
-    contact.set("weekFeel", 0);
-    contact.set("currentFeel", currentFeel);
-    contact.save().done(function (data) {
-      console.log("HELLO!", data);
-    }).error(function () {
-      console.log("ERRORORORORORROR")
-    });
+    if ( app.currentUserContact[i] ) {
+      var contact = app.allContacts.find({id: app.currentUserContact[i].attributes.id});
+      if ( contact ) {
+        contact.set("lowFeel", lowestFeel);
+        contact.set("highFeel", highestFeel);
+        contact.set("weekFeel", 0);
+        contact.set("currentFeel", currentFeel);
+        contact.save().done(function (data) {
+          console.log("HELLO!", data);
+        }).error(function () {
+          console.log("ERRORORORORORROR")
+        });
+      }
+    }
   }
 };
