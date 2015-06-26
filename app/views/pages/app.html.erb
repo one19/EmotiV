@@ -21,9 +21,11 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
   </video>
   <div id="heading-over-image">
     <h1>!(She loves me)</h1>
-    <div id="authenticateButton">
-      <p class="authenticateLink">Get Started</p>
-    </div>
+    <% if @current_user %>
+      <div id="authenticateButton">
+        <p class="authenticateLink">Get Started</p>
+      </div>
+    <% end %>
   </div> 
   <div id="downarrow"><a class="slowly" href="#lower">
     <i class="icon-down-open"></i>
