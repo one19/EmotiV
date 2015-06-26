@@ -1,0 +1,27 @@
+.pagewidth {
+  margin: auto;
+  width: 700px;
+}
+
+.plus {
+  border-radius: 50%;
+  border: none;
+  height: 40px;
+  width: 40px;
+  background-color: #1ABC9C;
+  font-size: 25px;
+  margin-bottom: 20px;
+  }
+
+.spacing {
+  margin-right: 420px;
+}
+
+.greybg{
+  background-color: #ECF0F1;
+}
+
+.listpadding {
+  padding: 15px;
+  cursor: pointer;
+}

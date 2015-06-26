@@ -1,28 +1,12 @@
-== README
+This is a web app to chart your relationship with a person by analysing your emails or text messages.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+It was made using Ruby on Rails and Backbone and utilises APIs for sentiment.vivekn.com, Google Sign In and Gmail.
 
-Things you may want to cover:
+BUGS
+- Does not let a user know when they are trying to register the same accound twice
+- Does not automatically log a person in after they register
+- Does not close down modal after they register
+- Needs a more permanent video background
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+FUTURE PLANS
+- Analysing Facebook communication

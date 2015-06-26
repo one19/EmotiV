@@ -10,10 +10,10 @@ app.plzUpdateAjaxGods = function () {
 };
 app.loadHome = function () {
   app.appView = new app.AppView({collection: app.allContacts});
-  app.allSnippets = new app.Snippets();
+  app.allSnippets = app.allSnippets || new app.Snippets();
   app.allSnippets.fetch().done(function () {
     app.appView.render();
-    console.log('when');
+    //console.log('when');
   });
 };
 
@@ -27,7 +27,7 @@ app.Router = Backbone.Router.extend({
   home: function () {
     console.log("home view");
     app.appView = new app.AppView({collection: app.allContacts});
-    app.allSnippets = new app.Snippets();
+    app.allSnippets = app.allSnippets || new app.Snippets();
     app.allSnippets.fetch().done(function () {
 
     // List out all the contacts the user has
