@@ -57,11 +57,10 @@ app.Router = Backbone.Router.extend({
         model: contact
       });
       app.contactView.render();
-
+// debugger;
       app.userSnippets = new app.Snippets(app.allSnippets.where({
         contact_id: parseInt(id)
       }));
-
       app.currentUserContact = [];
       app.allContacts.each(function(contact) {
         if (contact.get('user_id') === app.user_id) {
@@ -71,7 +70,7 @@ app.Router = Backbone.Router.extend({
 
       if (app.user_id && app.userSnippets) {
         app.updateFeel(contact).done(function(){
-          app.contactView.render();
+          // app.contactView.render();
         });  
       }
 
@@ -84,6 +83,7 @@ app.Router = Backbone.Router.extend({
         app.snippetView.render();
       });
     });
+    
   },
 
   //testing framework for us to test styles/links ect.
