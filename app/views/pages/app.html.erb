@@ -33,13 +33,15 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
     <p>Want to know if your relationships are going steady, getting stronger or on the decline? We can tell you how your friends and lovers really feel about you, even if they won't.</p>
   </section>
 
+  <section class="pagewidth">
   <% if @current_user %>
     <%= form_tag(contacts_upload_path, multipart: true) do %>
-      <%= label_tag 'Upload SMS XML file:' %>
-      <%= file_field_tag 'xml' %>
-      <%= submit_tag 'Upload' %>
+      <%= label_tag 'Upload file (SMS XML):' %>
+      <%= file_field_tag 'xml', :class => 'spacing' %>
+      <%= submit_tag('&plus;'.html_safe, :class => 'plus') %>
     <% end %>
   <% end %>
+  </section>
 
   <div class="container">
 
@@ -117,7 +119,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 </script>
 
 
-<script id="login" type="text/template"> 
+<!-- <script id="login" type="text/template"> 
   
   <div class="log-in-bg">
     
@@ -132,16 +134,16 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 
   </div>
 
-</script>
+</script> -->
 
-
+<!-- 
 <script id="signup-options" type="text/template">
 
   
-</script>
+</script> -->
 
 
-<script id="signup" type="text/template"> 
+<!-- <script id="signup" type="text/template"> 
 
   <div class="sign-up-bg">
     
@@ -159,7 +161,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 
   </div>
   
-</script>
+</script> -->
 
 
 <script id="form" type="text/template"> 
@@ -173,7 +175,9 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 
 
 <script id="contactListView" type="text/template"> 
-  <h4>Contact name: {{ name }} -- Current feel: {{ currentFeel }}</h4>
+  <section class="pagewidth greybg">
+    <p class="listpadding">Contact name: {{ name }} -- Current feel: {{ currentFeel }}</p>
+  </section>
 </script>
 
 <script id="contactView" type="text/template">

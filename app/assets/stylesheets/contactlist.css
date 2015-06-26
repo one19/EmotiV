@@ -1,0 +1,27 @@
+.pagewidth {
+  margin: auto;
+  width: 700px;
+}
+
+.plus {
+  border-radius: 50%;
+  border: none;
+  height: 40px;
+  line-height: 20px;
+  width: 40px;
+  background-color: #1ABC9C;
+  font-size: 25px;
+}
+
+.spacing {
+  margin: 0 230px 0 50px;
+}
+
+.greybg:nth-child(1){
+  background-color: #ECF0F1;
+}
+
+.listpadding {
+  padding: 15px;
+  cursor: pointer;
+}
