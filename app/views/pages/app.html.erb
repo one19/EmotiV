@@ -37,13 +37,16 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
   </section>
 
   <section class="pagewidth">
+  <hr class="contact-hr">
   <% if @current_user %>
     <%= form_tag(contacts_upload_path, multipart: true) do %>
       <%= label_tag 'Upload file (SMS XML):' %>
+      <br>
       <%= file_field_tag 'xml', :class => 'spacing' %>
       <%= submit_tag('&plus;'.html_safe, :class => 'plus') %>
     <% end %>
   <% end %>
+  <hr class="contact-hr">
   </section>
 
   <div class="container">
@@ -181,6 +184,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 
   <section class="pagewidth greybg">
     <p class="listpadding">Contact name: {{ name }} -- Current feel: {{ feedback }} {{ currentFeel }}</p>
+    <hr>
   </section>
 
 </script>
