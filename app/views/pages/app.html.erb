@@ -16,7 +16,8 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 <script id="home" type="text/template">
 
   <video autoplay muted="true" loop id="bgvid">
-    <source src="https://pdlvimeocdn-a.akamaihd.net/58509/740/228916374.mp4?token2=1435224020_3a50161f3554441dc0f06c4292e1c16d&aksessionid=a5ad3b4840fe3e32">
+    <!-- <source src="/lib/romance.mp4"> -->
+    <source src="<%= asset_path "romance.mp4" %>" />
   </video>
   <div id="heading-over-image">
     <h1>!(She loves me)</h1>
@@ -175,9 +176,13 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 
 
 <script id="contactListView" type="text/template"> 
+<<<<<<< HEAD
   <section class="pagewidth greybg">
     <p class="listpadding">Contact name: {{ name }} -- Current feel: {{ currentFeel }}</p>
   </section>
+=======
+  <h4>Contact name: {{ name }} -- Current feel: {{ feedback }} {{ currentFeel }}</h4>
+>>>>>>> 268a697ad5cd60e6d91bfe20cceae92f31c2b4a9
 </script>
 
 <script id="contactView" type="text/template">
@@ -186,11 +191,13 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
     <li>Email: {{ email_address }}</li>
     <hr class="contact-hr">
     <li>Weeks average feeling: {{ weekFeel }}</li>
-    <li>Current feeling: {{ currentFeel }}</li>
+    <li>Current feeling: {{feedback}} {{ currentFeel }}</li>
     <li>Highest feeling: {{ highFeel }}</li>
     <li>Lowest feeling: {{ lowFeel }}</li>
     <hr class="contact-hr">
-    <div id="flotHere"></div>
+  </div>
+  <div id="flotHere"></div>
+  <div class="contact-info">
     <div id="snippetsHere"></div>
   </div>
 </script>
@@ -206,11 +213,11 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 <script id="authorizeView" type="text/template">
 
   <div id="video">
-    <img src=http://www.fillmurray.com/1300/550>
+    <source src="<%= asset_path "romance.mp4" %>" />
   </div>
 
   <div id="authorize-div">
-    <p id="authorize-label">Allow EmotiV to access your emails</p>
+    <p id="authorize-label">Allow EmotiV to access your 100 of your emails:</p>
     <!--Button for the user to click to initiate auth sequence -->
     <button id="authorize-button">
       Allow

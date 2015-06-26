@@ -5,12 +5,66 @@ app.GraphView = Backbone.View.extend({
   render: function () {
     //console.log('did a fucking thing, man.')
 
-    var series1 = [ [1,2], [2,4], [5,3], [6,9] ];
-    var series2 = [ [5,3], [7,6], [3,2], [4,3] ];
-    var series3 = [ [61.0233,Date.parse("Mon, 22 Jun 2015 10:49:24 AEST +10:00")], [67.3682,Date.parse("Mon, 22 Jun 2015 11:15:09 AEST +10:00")], [50.0000,Date.parse("Mon, 22 Jun 2015 11:17:30 AEST +10:00")], [56.5321,Date.parse("Mon, 22 Jun 2015 12:06:41 AEST +10:00")] ]
-    var series4 = [ [79.1132,Date.parse("Tue, 23 Jun 2015 11:55:26 AEST +10:00")], [65.4011,Date.parse("Tue, 23 Jun 2015 11:55:42 AEST +10:00")], [58.6840,Date.parse("Tue, 23 Jun 2015 11:55:52 AEST +10:00")], [59.7031,Date.parse("Tue, 23 Jun 2015 11:56:17 AEST +10:00")] ]
-    var data = [ { label: "Foo", data: [ [10, 1], [17, -14], [30, 5] ] }, { label: "Bar", data: [ [11, 13], [19, 11], [30, -7] ] }];
-    var plot = $.plot($('#flotHere'),[series3,series4]//, 
-  // {label: "y = 3",data: [[0, 3], [10, 3]]}
-  )}
+    var datez = [];
+    var feelz = [];
+    for ( var i = 0 ; i < app.userSnippets.length ; i++ ) {
+      var snip = app.userSnippets.models[i].attributes;
+      var d = Date.parse(snip.date);
+      // debugger;
+      datez.push(d);
+      feelz.push( JSON.parse(snip.context) );
+    }
+
+    var formyz = [];
+    for ( var i = 0 ; i < feelz.length ; i++ ) {
+      if ( i === 1 ) {
+        if ( feelz[i].result === 'Neutral' ) {
+          formyz.push(50);
+        }
+      } 
+      if ( feelz[i].result === 'Positive' ) {
+        formyz.push(parseInt(feelz[i].confidence));
+      } else if ( feelz[i].result === 'Negative' ) {
+        formyz.push(100 - parseInt(feelz[i].confidence));
+      } else if ( ( feelz[i].result === 'Neutral' ) && (i !== 1 ) ) {
+        formyz.push( (_.last(formyz) + parseInt(feelz[i].confidence) - 50 ) / 2 );
+      }
+    }
+
+    var options = {
+      series: {
+        lines: { show: true, fill: true, fillColor: "rgba(255, 255, 255, 0.8)" },
+        points: { show: true, fill: false }
+      },
+      xaxis: {
+        mode: "time",
+        //timeformat: "%m/%d/%y",
+        //minTickSize: [1, "day"],
+        min: _.min(datez),
+        max: _.max(datez)
+      },
+      yaxis: {
+        mode: 'number',
+        min: _.min(formyz),
+        max: _.max(formyz)
+      }
+    };
+    //var series1 = [ [1,2], [2,4], [5,3], [6,9] ];
+    //var series2 = [ [5,3], [7,6], [3,2], [4,3] ];
+    
+    //var data = [ { label: "Foo", data: [series1, series2] }, { label: "Bar", data: [ [11, 13], [19, 11], [30, -7] ] }];
+    var series = []
+    for ( var j = 0 ; j < feelz.length ; j++ ) {
+      series.push( [ datez[j] , Math.round(formyz[j]) ] );
+      // series.push( [ Math.round(formyz[j]), datez[j] ] );
+    }; 
+    var final = _.sortBy(series, function(el) {return el[0]})
+    $.plot($('#flotHere'), [{ label: "feels", data: final }], options );
+    // $.plot(
+    //   $("#flotHere"), 
+    //   {data: series, label: "Likeability"},
+    //   {yaxis: {label: "/100"}, xaxis: {mode: "time"}}
+    // );
+
+  }
 });
