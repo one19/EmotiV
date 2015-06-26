@@ -7,17 +7,17 @@
   border-radius: 50%;
   border: none;
   height: 40px;
-  line-height: 20px;
   width: 40px;
   background-color: #1ABC9C;
   font-size: 25px;
-}
+  margin-bottom: 20px;
+  }
 
 .spacing {
-  margin: 0 230px 0 50px;
+  margin-right: 420px;
 }
 
-.greybg:nth-child(1){
+.greybg{
   background-color: #ECF0F1;
 }
 
