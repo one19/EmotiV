@@ -120,7 +120,8 @@ class ContactsController < ApplicationController
     end
 
     # destroy xml.temp data afterwards
-    # @xml_array.destroy
+    @xml_array = nil
+    @snippets_to_send = nil
     redirect_to root_path
   end
 
