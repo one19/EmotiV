@@ -270,6 +270,7 @@ app.CheckAuthView = Backbone.View.extend({
   grabHundred: function () {
     var request = gapi.client.gmail.users.messages.list({
       'userId': 'me',
+      'maxResults': 50
       //'pageToken': 1
     });
 
