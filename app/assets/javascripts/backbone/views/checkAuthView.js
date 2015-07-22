@@ -1,5 +1,6 @@
 // Your Client ID can be retrieved from your project in the Google
 var app = app || {};
+//app.page = 1 || app.page;
 
 // Developer Console, https://console.developers.google.com
 var CLIENT_ID = '1063464784487-2ok02fg85mtp1ann5unfah32r7k3ppkb.apps.googleusercontent.com';
@@ -116,11 +117,12 @@ app.CheckAuthView = Backbone.View.extend({
       };
 
       var completed = function ( messages, i ) {
-        // console.log("\n\n\n\n\nWOOOWONKANKNKNKNESLKFNLWKFNLWKMNLKMLALKNLKANSLKMLKNFLKWN\n\n\n\n");
+        //console.log("\n\n\n\n\nWOOOWONKANKNKNKNESLKFNLWKFNLWKMNLKMLALKNLKANSLKMLKNFLKWN\n\n\n\n");
         // console.log( messages, messages.length, i++ );
         // console.warn( i, messages.length - 1, "DO THEY EQUAL!", i === messages.length -1 );
         if ( i === messages.length ) {
-          // console.log("\n\n\n\n\nWOOOWONKANKNKNKNESLKFNLWKFNLWKMNLKMLALKNLKANSLKMLKNFLKWN\n\n\n\n");
+          //console.log("\n\n\n\n\nWOOOWONKANKNKNKNESLKFNLWKFNLWKMNLKMLALKNLKANSLKMLKNFLKWN\n\n\n\n");
+          app.checkAuthView.appendPre('DONE! IF NOT REDIRECTED, GO BACK TO HOME');
           app.router.navigate('/', true);
           return;
         }
@@ -221,6 +223,7 @@ app.CheckAuthView = Backbone.View.extend({
 
   //takes in a batch of 100 responses, maps them to a big JSON request, and posts it to our sentiment API, on return, executes the snippet creation on the batch
   batchEmote: function (resp) {
+    app.checkAuthView.appendPre('TURNING EMAILS INTO EMOTIONS');
     //setup
     var messages = $.map(resp, function (el) {return el;});
     var emotMass = [];
@@ -255,6 +258,7 @@ app.CheckAuthView = Backbone.View.extend({
       data: JSON.stringify( emotMass ),
       //on success, make a function call to make snippets with the data returned from the ajax request, as well as all the message data, for everything not called context
       success: function (data) {
+        app.checkAuthView.appendPre('MAKING SNIPPETS');
         app.checkAuthView.makeSnippets(data, messages);
       },
       error: function (data) {
@@ -268,18 +272,19 @@ app.CheckAuthView = Backbone.View.extend({
    * are found an appropriate message is printed.
    */
   grabHundred: function () {
+    
     var request = gapi.client.gmail.users.messages.list({
       'userId': 'me',
       'maxResults': 50
-      //'pageToken': 1
+      //'pageToken': JSON.stringify(app.page)
     });
+    app.page += 1;
 
     request.execute( function (resp) {
       //setup:
       var messages = resp.messages;
       var batch = gapi.client.newBatch();
       app.checkAuthView.appendPre('LOADING MESSAGES');
-
 
       //this generates the batch file for every email id in our 100 responses from the server
       if (messages.length > 0) {

@@ -15,10 +15,9 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 
 <script id="home" type="text/template">
 
-  <video autoplay muted="true" loop id="bgvid">
-    <!-- <source src="/lib/romance.mp4"> -->
-    <source src="<%= asset_path "romance.mp4" %>" />
-  </video>
+
+  <img id="backythebackground" src="<%= asset_path "bad-relationship.jpg" %>" />
+
   <div id="heading-over-image">
     <h1>!(She loves me)</h1>
     <% if @current_user %>
