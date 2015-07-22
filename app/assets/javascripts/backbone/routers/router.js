@@ -8,14 +8,15 @@ app.plzUpdateAjaxGods = function () {
     console.log("MISSED AGAIN YA DICKHEAD");
   }
 };
-app.loadHome = function () {
-  app.appView = new app.AppView({collection: app.allContacts});
-  app.allSnippets = app.allSnippets || new app.Snippets();
-  app.allSnippets.fetch().done(function () {
-    app.appView.render();
-    //console.log('when');
-  });
-};
+// Don't think this function is being used anywhere
+// app.loadHome = function () {
+//   app.appView = new app.AppView({collection: app.allContacts});
+//   app.allSnippets = app.allSnippets || new app.Snippets();
+//   app.allSnippets.fetch().done(function () {
+//     app.appView.render();
+//     //console.log('when');
+//   });
+// };
 
 app.Router = Backbone.Router.extend({
   routes: {
