@@ -5,7 +5,7 @@ app.plzUpdateAjaxGods = function () {
     app.updateFeels();
     console.log('WHAMMY');  
   } else {
-    console.log("MISSED AGAIN YA DICKHEAD");
+    console.log("dice = 0");
   }
 };
 // Don't think this function is being used anywhere
