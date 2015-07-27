@@ -1,7 +1,7 @@
 # This is a web app to chart your relationship with a person by analysing your emails or text messages.
 
 It was made using Ruby on Rails, Backbone, and the APIs for sentiment.vivekn.com, Google Sign In, and Gmail.
-B64.js was used for converting uint8 encoded messages to base64 arrays.
+B64.js was used for converting unit8 encoded messages to base64 arrays.
 LeanModal.js was used to aid the creation of the login modals.
 jQuery.flot.js was used as a lightweight graph tool with non-discrete time interval graphing.
 
