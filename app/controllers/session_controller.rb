@@ -16,7 +16,7 @@ class SessionController < ApplicationController
       # redirect_to root_path
       render :json => {:status => 'not okay', :message => 'Invalid login'}
     end
-    binding.pry
+    #binding.pry
   end
 
   def destroy
