@@ -58,7 +58,6 @@ app.Router = Backbone.Router.extend({
         model: contact
       });
       app.contactView.render();
-// debugger;
       app.userSnippets = new app.Snippets(app.allSnippets.where({
         contact_id: parseInt(id)
       }));

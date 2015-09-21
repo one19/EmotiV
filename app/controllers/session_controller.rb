@@ -1,7 +1,4 @@
 class SessionController < ApplicationController
-  def new
-  end
-
   def create
     user = User.find_by :email => params[:email]
     if user.present? && user.authenticate(params[:password]) # present is rails, any is ruby. Any is only for collections, present works on things like strings
@@ -11,12 +8,11 @@ class SessionController < ApplicationController
       render :json => {:status => 'okay', :user => user}
       # redirect_to root_path
     else
-      # flash[:notice] = "Invalid login, please try again"
+      flash[:notice] = "Invalid login, please try again"
       # flash is a mayfly variable, it only lasts a single page woooohooooooooo
       # redirect_to root_path
       render :json => {:status => 'not okay', :message => 'Invalid login'}
     end
-    #binding.pry
   end
 
   def destroy
