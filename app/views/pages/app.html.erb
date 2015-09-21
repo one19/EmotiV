@@ -205,7 +205,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 
 <script id="snippetView" type="text/template">
   <p>snippet time</p>
-  <li>{{ if inbound ? "inbound" : "outbound" }}</li>
+  <li>{{ inbound ? "inbound" : "outbound" }}</li>
   <li>Date of snippet: {{ date }}</li>
   <li>Context: {{ context }}</li>
 </script>
