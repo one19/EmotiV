@@ -6,11 +6,9 @@ class SessionController < ApplicationController
 
       # session[:start] = Time.now --you could use this as a backbone for something elsewhere to stop someone from making changes after a certain amount of time. session timeout
       render :json => {:status => 'okay', :user => user}
-      # redirect_to root_path
     else
       flash[:notice] = "Invalid login, please try again"
       # flash is a mayfly variable, it only lasts a single page woooohooooooooo
-      # redirect_to root_path
       render :json => {:status => 'not okay', :message => 'Invalid login'}
     end
   end

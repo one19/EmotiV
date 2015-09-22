@@ -190,6 +190,7 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 <script id="contactView" type="text/template">
   <div class="contact-info">
     <h2 class="contact-name">{{ name }}</h2>
+    <!-- put a conditional around this email <li/> beneath so that if there is no email we don't show this at all -->
     <li>Email: {{ email_address }}</li>
     <hr class="contact-hr">
     <li>Current feeling: {{feedback}} {{ currentFeel }}</li>
@@ -204,8 +205,8 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 </script>
 
 <script id="snippetView" type="text/template">
-  <p>snippet time</p>
-  <li>{{ if inbound ? "inbound" : "outbound" }}</li>
+  <p>Snippet:</p>
+  <li>{{ inbound ? "Inbound" : "Outbound" }}</li>
   <li>Date of snippet: {{ date }}</li>
   <li>Context: {{ context }}</li>
 </script>
