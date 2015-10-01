@@ -54,16 +54,16 @@
   z-index: 2;
   top: 0;
   list-style: none;
-}
-.nav:first-child {
-  right: 0;
-  margin: 25px;
+  &:first-child {
+    right: 0;
+    margin: 25px;
+  }
+  &:nth-child(2) {
+    right: 0;
+    margin: 25px 125px 25px 25px;
+  }
 }
 
-.nav:nth-child(2) {
-  right: 0;
-  margin: 25px 125px 25px 25px;
-}
 
 #usersname {
   margin-right: 175px;
