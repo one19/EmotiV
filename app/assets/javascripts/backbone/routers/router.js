@@ -8,15 +8,6 @@ app.plzUpdateAjaxGods = function () {
     console.log("dice = 0");
   }
 };
-// Don't think this function is being used anywhere
-// app.loadHome = function () {
-//   app.appView = new app.AppView({collection: app.allContacts});
-//   app.allSnippets = app.allSnippets || new app.Snippets();
-//   app.allSnippets.fetch().done(function () {
-//     app.appView.render();
-//     //console.log('when');
-//   });
-// };
 
 app.Router = Backbone.Router.extend({
   routes: {
