@@ -205,11 +205,11 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 </script>
 
 <script id="snippetView" type="text/template">
-  <li>Snippet Information:</li>
+  <li><span class="bold">Snippet Information:</span></li>
   <br>
-  <li>Snippet {{ inbound ? "received" : "sent" }}</li>
-  <li>Time/date of snippet: {{ app.fixDateTime(date) }}</li>
-  <li>Context: {{ app.niceContext( JSON.parse(context) ) }}</li>
+  <li><span class="bold">Snippet {{ inbound ? "received" : "sent" }}</span></li>
+  <li><span class="bold">Time/date of snippet:</span> {{ app.fixDateTime(date) }}</li>
+  <li><span class="bold">Context:</span> {{ app.niceContext( JSON.parse(context) ) }}</li>
 </script>
 
 <script>
