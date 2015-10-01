@@ -20,11 +20,6 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 
   <div id="heading-over-image">
     <h1>!(She Loves Me)</h1>
-    <% if @current_user %>
-      <div id="authenticateButton">
-        <p class="authenticateLink">Get Started</p>
-      </div>
-    <% end %>
   </div>
   <div id="downarrow"><a class="slowly" href="#lower">
     <i class="icon-down-open"></i>
@@ -33,7 +28,16 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
   <a name="lower"></a>
   <section class="hometext">
     <p>Want to know if your relationships are going steady, getting stronger or on the decline? We can tell you how your friends and lovers really feel about you, even if they won't.</p>
+    <br>
+    <p>You can either connect via your google account or upload an XML of your SMS via the android app "SMS Backup And Restore"</p>
+    <br>
+    <p>No communications are stored. The contents is simply analysed separately from sender/receiver data and then the results are returned and the communications are destroyed.</p>
   </section>
+  <% if @current_user %>
+    <div id="authenticateButton">
+      <p class="authenticateLink">Get started with your google account!</p>
+    </div>
+  <% end %>
 
   <section class="pagewidth">
   <hr class="contact-hr">
