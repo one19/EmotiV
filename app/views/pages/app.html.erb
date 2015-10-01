@@ -205,10 +205,34 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 </script>
 
 <script id="snippetView" type="text/template">
-  <p>Snippet:</p>
-  <li>{{ inbound ? "Inbound" : "Outbound" }}</li>
-  <li>Date of snippet: {{ date }}</li>
-  <li>Context: {{ context }}</li>
+  <li>Snippet Information:</li>
+  <br>
+  <li>Snippet {{ inbound ? "received" : "sent" }}</li>
+  <li>Time/date of snippet: {{ app.fixDateTime(date) }}</li>
+  <li>Context: {{ app.niceContext( JSON.parse(context) ) }}</li>
+</script>
+
+<script>
+  // Make date/time more readable
+  app.fixDateTime = function (time) {
+    var regex = /(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):\d\d.000\+11:00/;
+    var niceness = time.match(regex);
+    var year = niceness[1];
+    var month = niceness[2];
+    var day = niceness[3];
+    var hour = niceness[4];
+    var minute = niceness[5];
+    var fixed = hour + ":" + minute + " - " + day + "/" + month + "/" + year;
+    return fixed;
+  };
+
+  // Make context a bit more understandable
+  app.niceContext = function (context) {
+    var result = context.result;
+    var confidence = context.confidence;
+    var string = confidence + "% sure of " + result;
+    return string;
+  };
 </script>
 
 <script id="authorizeView" type="text/template">
