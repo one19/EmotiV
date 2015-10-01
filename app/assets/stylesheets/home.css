@@ -67,11 +67,6 @@ background-size: cover;
   left: 45%;
 }
 
-/*a.slowly {
-  -webkit-transition: all 150ms ease;
-  transition: all 150ms ease;
-}*/
-
 #backythebackground {
   -webkit-filter: grayscale(100%);
   -moz-filter: grayscale(100%);
