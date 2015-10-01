@@ -8,8 +8,20 @@
   margin: -100px auto -65px auto;
 }
 
+#snippetsHere {
+  width: 960px;
+}
+
 .snippet {
   background-color: gainsboro;
-  padding: 1px 15px 8px 15px;
+  padding: 2px 5px 8px 5px;
   margin: 3px auto;
+  display: inline-block;
+  width: 335px;
+  p, li {
+  font-size: 0.9em;
+  }
+  &:nth-child(odd) {
+    border-right: 1px solid black;
+  }
 }

@@ -20,11 +20,6 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 
   <div id="heading-over-image">
     <h1>!(She Loves Me)</h1>
-    <% if @current_user %>
-      <div id="authenticateButton">
-        <p class="authenticateLink">Get Started</p>
-      </div>
-    <% end %>
   </div>
   <div id="downarrow"><a class="slowly" href="#lower">
     <i class="icon-down-open"></i>
@@ -33,7 +28,16 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
   <a name="lower"></a>
   <section class="hometext">
     <p>Want to know if your relationships are going steady, getting stronger or on the decline? We can tell you how your friends and lovers really feel about you, even if they won't.</p>
+    <br>
+    <p>You can either connect via your google account or upload an XML of your SMS via the android app "SMS Backup And Restore"</p>
+    <br>
+    <p>No communications are stored. The contents is simply analysed separately from sender/receiver data and then the results are returned and the communications are destroyed.</p>
   </section>
+  <% if @current_user %>
+    <div id="authenticateButton">
+      <p class="authenticateLink">Get started with your google account!</p>
+    </div>
+  <% end %>
 
   <section class="pagewidth">
   <hr class="contact-hr">
@@ -205,10 +209,34 @@ app.email = "<%= @current_user? User.find_by(id: @current_user.id).email : 'unde
 </script>
 
 <script id="snippetView" type="text/template">
-  <p>Snippet:</p>
-  <li>{{ inbound ? "Inbound" : "Outbound" }}</li>
-  <li>Date of snippet: {{ date }}</li>
-  <li>Context: {{ context }}</li>
+  <li><span class="bold">Snippet Information:</span></li>
+  <br>
+  <li><span class="bold">Snippet {{ inbound ? "received" : "sent" }}</span></li>
+  <li><span class="bold">Time/date of snippet:</span> {{ app.fixDateTime(date) }}</li>
+  <li><span class="bold">Context:</span> {{ app.niceContext( JSON.parse(context) ) }}</li>
+</script>
+
+<script>
+  // Make date/time more readable
+  app.fixDateTime = function (time) {
+    var regex = /(\d\d\d\d)-(\d\d)-(\d\d)T(\d\d):(\d\d):\d\d.000\+11:00/;
+    var niceness = time.match(regex);
+    var year = niceness[1];
+    var month = niceness[2];
+    var day = niceness[3];
+    var hour = niceness[4];
+    var minute = niceness[5];
+    var fixed = hour + ":" + minute + " - " + day + "/" + month + "/" + year;
+    return fixed;
+  };
+
+  // Make context a bit more understandable
+  app.niceContext = function (context) {
+    var result = context.result;
+    var confidence = context.confidence;
+    var string = confidence + "% sure of " + result;
+    return string;
+  };
 </script>
 
 <script id="authorizeView" type="text/template">
