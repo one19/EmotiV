@@ -42,6 +42,7 @@ app.Router = Backbone.Router.extend({
 
   viewContact: function (id) {
     console.log('Individual contact view', id);
+    window.scroll(0,0);
     app.allSnippets = new app.Snippets();
     app.allSnippets.fetch().done(function() {
       var contact = app.allContacts.get(id);
